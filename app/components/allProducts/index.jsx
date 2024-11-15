@@ -74,7 +74,7 @@ const AllProducts = () => {
                 />
                 {/* Discount Badge (top-right corner) */}
                 {product.discount > 0 && (
-                  <div className="absolute top-0 right-0 bg-transparent text-red-600 py-1 px-2 rounded-md text-sm font-semibold">
+                  <div className="absolute top-0 right-0 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold">
                     {product.discount}%
                   </div>
                 )}
