@@ -6,7 +6,7 @@ export const ProductsData = [
     name: "Leather Crossbody Bag",
     price: 120,
     images: [
-      "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
+      "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
       "https://images.pexels.com/photos/26954379/pexels-photo-26954379/free-photo-of-white-artificial-crocodile-pattern-leather-purse.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       "https://images.pexels.com/photos/27100523/pexels-photo-27100523/free-photo-of-photo-of-a-leather-handbag.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
@@ -27,7 +27,7 @@ export const ProductsData = [
       name: "Classic Tote Bag",
       price: 180,
       images: [
-        "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
+        "https://corio.pk/cdn/shop/files/01_1b3b7122-33b0-4673-9ba6-307784a9aeb3_1080x.jpg?v=1730976835",
         "https://images.pexels.com/photos/26954379/pexels-photo-26954379/free-photo-of-white-artificial-crocodile-pattern-leather-purse.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100523/pexels-photo-27100523/free-photo-of-photo-of-a-leather-handbag.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
@@ -49,7 +49,7 @@ export const ProductsData = [
       name: "Elegant Handbag",
       price: 220,
       images: [
-        "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
+        "https://corio.pk/cdn/shop/products/1_b0c1276c-ba50-4d50-a2c8-6905d1542e66_1080x.jpg?v=1698838961",
         "https://images.pexels.com/photos/26954379/pexels-photo-26954379/free-photo-of-white-artificial-crocodile-pattern-leather-purse.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100523/pexels-photo-27100523/free-photo-of-photo-of-a-leather-handbag.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
@@ -71,7 +71,7 @@ export const ProductsData = [
       name: "Minimalist Handbag",
       price: 240,
       images: [
-        "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",
+        "https://corio.pk/cdn/shop/files/JC-909_1080x.jpg?v=1702365860",
         "https://images.pexels.com/photos/26954379/pexels-photo-26954379/free-photo-of-white-artificial-crocodile-pattern-leather-purse.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100523/pexels-photo-27100523/free-photo-of-photo-of-a-leather-handbag.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
         "https://images.pexels.com/photos/27100522/pexels-photo-27100522/free-photo-of-brown-bag-in-a-studio.jpeg",

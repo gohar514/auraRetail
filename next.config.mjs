@@ -4,7 +4,7 @@
 const nextConfig = {
     images: {
        
-      domains: ['img.freepik.com','images.pexels.com' ], // Add the external domains you're using here
+      domains: ['img.freepik.com','images.pexels.com', 'corio.pk' ], // Add the external domains you're using here
     },
   };
   

@@ -74,7 +74,7 @@ const AllProducts = () => {
                 />
                 {/* Discount Badge (top-right corner) */}
                 {product.discount > 0 && (
-                  <div className="absolute top-0 right-0 bg-black text-white py-1 px-2 rounded-md text-sm font-semibold">
+                  <div className="absolute top-0 right-0 bg-transparent text-red-600 py-1 px-2 rounded-md text-sm font-semibold">
                     {product.discount}%
                   </div>
                 )}
@@ -85,7 +85,7 @@ const AllProducts = () => {
                 <h2 className="text-xs sm:text-base font-semibold mb-2">{product.name}</h2>
                 {/* Price */}
                 <div className="flex items-center gap-2">
-                  <div className="text-sm text-gray-800">
+                  <div className="text-sm text-red-600">
                     Rs.{product.discount > 0 ? ((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price.toFixed(2)}
                   </div>
                   {product.discount > 0 && (

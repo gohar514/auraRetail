@@ -286,7 +286,7 @@ const Checkout = () => {
             <div className="space-y-2">
               <div className="font-semibold text-xl font-playfair">Payments</div>
               <div className="flex justify-start gap-1 items-center h-12 border border-gray-300 bg-[#f6f6f6] rounded">
-                <div className="pl-2">
+                <div className="pl-2 flex items-center">
                   <input
                     type="radio"
                     id="cod"
