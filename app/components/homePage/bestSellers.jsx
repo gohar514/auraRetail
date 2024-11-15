@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image'; 
-import Link from 'next/link';
-import { useState } from 'react';
-import { ProductsData } from './ProductsData';
+import Image from "next/image"; 
+import Link from "next/link";
+import { useState } from "react";
+import { ProductsData } from "./ProductsData";
+import { motion } from "framer-motion"; // Import motion for transition
 
 const BestSellers = ({ relatedProducts }) => {
   const productsToShow = relatedProducts && relatedProducts.length > 0
@@ -13,6 +14,7 @@ const BestSellers = ({ relatedProducts }) => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [currentImages, setCurrentImages] = useState(Array(productsToShow.length).fill(0)); // Default to the first image for each product
+  const [directions, setDirections] = useState(Array(productsToShow.length).fill(0)); // Manage directions per product
 
   // Handle swipe gestures
   const handleTouchStart = (e) => {
@@ -35,6 +37,11 @@ const BestSellers = ({ relatedProducts }) => {
   };
 
   const handleNextImage = (index) => {
+    setDirections((prev) => {
+      const updatedDirections = [...prev];
+      updatedDirections[index] = 1; // Set direction to 1 (left)
+      return updatedDirections;
+    });
     setCurrentImages((prevIndex) => {
       const updatedIndex = [...prevIndex];
       updatedIndex[index] = (updatedIndex[index] + 1) % productsToShow[index].images.length;
@@ -43,6 +50,11 @@ const BestSellers = ({ relatedProducts }) => {
   };
 
   const handlePrevImage = (index) => {
+    setDirections((prev) => {
+      const updatedDirections = [...prev];
+      updatedDirections[index] = -1; // Set direction to -1 (right)
+      return updatedDirections;
+    });
     setCurrentImages((prevIndex) => {
       const updatedIndex = [...prevIndex];
       updatedIndex[index] = 
@@ -70,17 +82,26 @@ const BestSellers = ({ relatedProducts }) => {
                   onTouchStart={handleTouchStart}
                   onTouchEnd={(e) => handleTouchEnd(e, index)}
                 >
-                  <Image
-                    src={product.images[currentImages[index]]} // Dynamic image index
-                    alt={product.name}
-                    layout="responsive"
-                    width={450}
-                    height={562}
-                    objectFit="cover"
-                    className="group-hover:scale-105 transition-transform duration-300"
-                    quality={75}
-                    priority
-                  />
+                  <motion.div
+                    key={currentImages[index]}
+                    initial={{ x: directions[index] === 1 ? "100%" : "-100%", opacity: 0 }}
+                    animate={{ x: "0%", opacity: 1 }}
+                    exit={{ x: directions[index] === 1 ? "-100%" : "100%", opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="w-full h-full"
+                  >
+                    <Image
+                      src={product.images[currentImages[index]]} // Dynamic image index
+                      alt={product.name}
+                      layout="responsive"
+                      width={450}
+                      height={562}
+                      objectFit="cover"
+                      className="group-hover:scale-105 transition-transform duration-300"
+                      quality={75}
+                      priority
+                    />
+                  </motion.div>
                   
                   {product.discount > 0 && (
                     <div className="absolute top-0 right-0 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold">

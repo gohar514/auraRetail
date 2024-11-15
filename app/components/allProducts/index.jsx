@@ -106,10 +106,10 @@ const AllProducts = () => {
       <div className="grid gap-2 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
         {sortedProducts.map((product, index) => (
           <Link href={`/product/${product.id}`} key={product.id}>
-            <div className="bg-white rounded-lg overflow-hidden">
+            <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
               {/* Image */}
               <div
-                className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72"
+                className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72 transition-all duration-300 ease-in-out transform group-hover:scale-105"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={(e) => handleTouchEnd(e, index)}
               >

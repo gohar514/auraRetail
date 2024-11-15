@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/app/store/cartSlice";
 import Link from "next/link";
 import AlertPopup from "../AlertPopup";
+import { motion } from "framer-motion";
 
 const ImageAndDescription = () => {
   const { id } = useParams();
@@ -14,10 +15,10 @@ const ImageAndDescription = () => {
   const [quantity, setQuantity] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [direction, setDirection] = useState(0); // Swipe direction
   const dispatch = useDispatch();
 
   const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -26,51 +27,52 @@ const ImageAndDescription = () => {
   const product = ProductsData.find((p) => p.id === parseInt(id));
 
   if (!mounted) return <div>Loading...</div>;
-  if (!product || !product.images || product.images.length === 0) return <div>Product not found or images unavailable.</div>;
+  if (!product || !product.images || product.images.length === 0) {
+    return <div>Product not found or images unavailable.</div>;
+  }
 
   const handleIncrement = () => setQuantity(quantity + 1);
   const handleDecrement = () => quantity > 1 && setQuantity(quantity - 1);
 
   const handleAddToCart = () => {
-    const discountedPrice = product.discount > 0 
-      ? (product.price * (1 - product.discount / 100)).toFixed(2)
-      : product.price.toFixed(2);
-    
-    dispatch(addToCart({
-      ...product,
-      quantity,
-      price: discountedPrice
-    }));
+    const discountedPrice =
+      product.discount > 0
+        ? (product.price * (1 - product.discount / 100)).toFixed(2)
+        : product.price.toFixed(2);
+
+    dispatch(
+      addToCart({
+        ...product,
+        quantity,
+        price: discountedPrice,
+      })
+    );
     setShowAlert(true);
   };
 
   const closeAlert = () => setShowAlert(false);
 
-  // Handle swipe gestures
-  const handleTouchStart = (e) => {
-    const touchStart = e.touches[0].clientX;
-    setTouchStart(touchStart);
-  };
+  const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
 
   const handleTouchEnd = (e) => {
     const touchEnd = e.changedTouches[0].clientX;
-    setTouchEnd(touchEnd);
 
     if (touchStart - touchEnd > 50) {
-      // Swipe left (next image)
-      handleNextImage();
-    }
-    if (touchEnd - touchStart > 50) {
-      // Swipe right (previous image)
-      handlePrevImage();
+      // Swipe left
+      handleNextImage(1);
+    } else if (touchEnd - touchStart > 50) {
+      // Swipe right
+      handlePrevImage(-1);
     }
   };
 
-  const handleNextImage = () => {
+  const handleNextImage = (dir) => {
+    setDirection(dir);
     setCurrentImage((prevIndex) => (prevIndex + 1) % product.images.length);
   };
 
-  const handlePrevImage = () => {
+  const handlePrevImage = (dir) => {
+    setDirection(dir);
     setCurrentImage((prevIndex) =>
       prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
     );
@@ -79,16 +81,20 @@ const ImageAndDescription = () => {
   return (
     <div className="container mx-auto px-4 lg:px-16 py-8 lg:py-12 font-tenorSans">
       <div className="grid h-auto grid-cols-1 lg:grid-cols-2 gap-8">
-        
         {/* Image Slider */}
-        <div 
-          className="relative lg:h-1/2 bg-gray-100 rounded-lg flex items-start justify-center"
+        <div
+          className="relative lg:h-1/2 bg-white rounded-lg flex items-start justify-center overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <img
+          <motion.img
+            key={currentImage}
             src={product.images[currentImage]}
             alt={product.name}
+            initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
+            animate={{ x: "0%", opacity: 1 }}
+            exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
             className="max-w-full bg-cover h-full rounded-lg shadow-lg"
           />
           <div className="absolute top-0 left-0 p-2 text-xs font-playfair">
@@ -98,7 +104,9 @@ const ImageAndDescription = () => {
 
         {/* Product Details */}
         <div className="flex flex-col space-y-4 md:space-y-6">
-          <h1 className="text-xl font-semibold text-gray-900 font-playfair">{product.name}</h1>
+          <h1 className="text-xl font-semibold text-gray-900 font-playfair">
+            {product.name}
+          </h1>
           <p className="text-base text-gray-600">
             Color: <span className="font-normal text-gray-900">{product.color}</span>
           </p>
@@ -107,8 +115,8 @@ const ImageAndDescription = () => {
           <div className="flex items-center gap-3">
             <div className="text-base text-gray-800">
               <span className="ml-1">Rs.</span>
-              {product.discount > 0 
-                ? ((product.price * (1 - product.discount / 100)).toFixed(2))
+              {product.discount > 0
+                ? (product.price * (1 - product.discount / 100)).toFixed(2)
                 : product.price.toFixed(2)}
             </div>
             {product.discount > 0 && (
@@ -163,39 +171,59 @@ const ImageAndDescription = () => {
           </div>
 
           {/* Product Description */}
-          <h2 className="text-xl font-semibold text-gray-900 font-playfair">Product Details</h2>
+          <h2 className="text-xl font-semibold text-gray-900 font-playfair">
+            Product Details
+          </h2>
           <div className="border border-gray-200 bg-gray-100 rounded-sm px-2 py-4">
-            <p className="text-gray-600 text-justify leading-relaxed">{product.description}</p>
+            <p className="text-gray-600 text-justify leading-relaxed">
+              {product.description}
+            </p>
             <div>
-              <div className="text-start font-semibold py-2 font-playfair">Measurements:</div>
+              <div className="text-start font-semibold py-2 font-playfair">
+                Measurements:
+              </div>
               <ul className="list-disc ml-6 text-gray-600">
-                <li>Width: <span className="mx-auto">{product.width}</span> Inches</li>
-                <li>Height: <span className="mx-auto">{product.height}</span> Inches</li>
+                <li>
+                  Width: <span className="mx-auto">{product.width}</span> Inches
+                </li>
+                <li>
+                  Height: <span className="mx-auto">{product.height}</span> Inches
+                </li>
               </ul>
             </div>
             <div className="m-4">
-              <p className="text-center font-semibold py-2 font-playfair">More Information</p>
+              <p className="text-center font-semibold py-2 font-playfair">
+                More Information
+              </p>
               <div className="w-full border border-gray-200">
                 <div className="flex justify-start items-center bg-gray-200 p-2">
                   <div className="w-full">Color:</div>
-                  <div className="w-full pl-2 border-l border-l-gray-400">{product.color}</div>
+                  <div className="w-full pl-2 border-l border-l-gray-400">
+                    {product.color}
+                  </div>
                 </div>
                 <div className="flex justify-start items-center p-2">
                   <div className="w-full">Gender:</div>
-                  <div className="w-full pl-2 border-l border-l-gray-400">{product.gender}</div>
+                  <div className="w-full pl-2 border-l border-l-gray-400">
+                    {product.gender}
+                  </div>
                 </div>
                 <div className="flex justify-start items-center bg-gray-200 p-2">
                   <div className="w-full">Material:</div>
-                  <div className="w-full pl-2 border-l border-l-gray-400">{product.material}</div>
+                  <div className="w-full pl-2 border-l border-l-gray-400">
+                    {product.material}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          
           {/* Alert Popup */}
           {showAlert && (
             <AlertPopup
-              message={`${product.name} added to cart at Rs.${(product.price * (1 - product.discount / 100)).toFixed(2)}!`}
+              message={`${product.name} added to cart at Rs.${(
+                product.price *
+                (1 - product.discount / 100)
+              ).toFixed(2)}!`}
               onClose={closeAlert}
               duration={2000}
             />
