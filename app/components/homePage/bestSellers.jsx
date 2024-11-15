@@ -37,7 +37,7 @@ const BestSellers = ({ relatedProducts }) => {
                   />
                   
                   {product.discount > 0 && (
-                    <div className="absolute top-0 right-0 bg-black text-white py-1 px-2 rounded-md text-sm font-semibold">
+                    <div className="absolute top-0 right-0 bg-transparent text-red-600 py-1 px-2 rounded-md text-sm font-semibold">
                       {product.discount}% 
                     </div>
                   )}
@@ -49,7 +49,7 @@ const BestSellers = ({ relatedProducts }) => {
                   {product.name}
                 </h3>
                 <div className="flex items-center justify-center gap-2 mt-2">
-                  <div className="text-base text-gray-800">
+                  <div className="text-base text-red-600">
                     <span className="mr-1">Rs.</span>{product.discount > 0 ? ((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price.toFixed(2)}
                   </div>
                   {product.discount > 0 && (
