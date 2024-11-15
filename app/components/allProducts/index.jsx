@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import { ProductsData } from '../homePage/ProductsData';
 import Link from 'next/link';
@@ -8,6 +8,10 @@ const AllProducts = () => {
   const [sortOption, setSortOption] = useState('');
   // State for sorted products
   const [sortedProducts, setSortedProducts] = useState([...ProductsData]);
+  // State for current image index of each product
+  const [currentImages, setCurrentImages] = useState(
+    Array(ProductsData.length).fill(0) // Default to the first image for each product
+  );
 
   // Sorting logic
   const handleSortChange = (e) => {
@@ -18,12 +22,12 @@ const AllProducts = () => {
 
     switch (selectedOption) {
       case 'Price, low to high':
-        sortedArray.sort((a, b) => 
+        sortedArray.sort((a, b) =>
           (a.price * (1 - a.discount / 100)) - (b.price * (1 - b.discount / 100))
         );
         break;
       case 'Price, high to low':
-        sortedArray.sort((a, b) => 
+        sortedArray.sort((a, b) =>
           (b.price * (1 - b.discount / 100)) - (a.price * (1 - a.discount / 100))
         );
         break;
@@ -38,6 +42,44 @@ const AllProducts = () => {
     }
 
     setSortedProducts(sortedArray);
+  };
+
+  // Swipe functionality logic
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e, index) => {
+    setTouchEnd(e.changedTouches[0].clientX);
+
+    if (touchStart - touchEnd > 50) {
+      // Swipe left (next image)
+      handleNextImage(index);
+    }
+    if (touchEnd - touchStart > 50) {
+      // Swipe right (previous image)
+      handlePrevImage(index);
+    }
+  };
+
+  const handleNextImage = (index) => {
+    setCurrentImages((prevIndex) => {
+      const updatedIndex = [...prevIndex];
+      updatedIndex[index] = (updatedIndex[index] + 1) % sortedProducts[index].images.length;
+      return updatedIndex;
+    });
+  };
+
+  const handlePrevImage = (index) => {
+    setCurrentImages((prevIndex) => {
+      const updatedIndex = [...prevIndex];
+      updatedIndex[index] = 
+        updatedIndex[index] === 0 ? sortedProducts[index].images.length - 1 : updatedIndex[index] - 1;
+      return updatedIndex;
+    });
   };
 
   return (
@@ -62,13 +104,17 @@ const AllProducts = () => {
 
       {/* Grid layout for products */}
       <div className="grid gap-2 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
-        {sortedProducts.map((product) => (
+        {sortedProducts.map((product, index) => (
           <Link href={`/product/${product.id}`} key={product.id}>
             <div className="bg-white rounded-lg overflow-hidden">
               {/* Image */}
-              <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72">
+              <div
+                className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={(e) => handleTouchEnd(e, index)}
+              >
                 <img
-                  src={product.images[0]}  // Updated to display the first image in the array
+                  src={product.images[currentImages[index]]}  // Dynamic image index for each product
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

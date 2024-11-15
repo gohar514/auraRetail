@@ -8,8 +8,6 @@ import { addToCart } from "@/app/store/cartSlice";
 import Link from "next/link";
 import AlertPopup from "../AlertPopup";
 
-import { FaAngleLeft , FaAngleRight} from "react-icons/fa6";
-
 const ImageAndDescription = () => {
   const { id } = useParams();
   const [mounted, setMounted] = useState(false);
@@ -48,16 +46,6 @@ const ImageAndDescription = () => {
 
   const closeAlert = () => setShowAlert(false);
 
-  const handleNextImage = () => {
-    setCurrentImage((prevIndex) => (prevIndex + 1) % product.images.length);
-  };
-
-  const handlePrevImage = () => {
-    setCurrentImage((prevIndex) =>
-      prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
-    );
-  };
-
   // Handle swipe gestures
   const handleTouchStart = (e) => {
     const touchStart = e.touches[0].clientX;
@@ -78,6 +66,16 @@ const ImageAndDescription = () => {
     }
   };
 
+  const handleNextImage = () => {
+    setCurrentImage((prevIndex) => (prevIndex + 1) % product.images.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImage((prevIndex) =>
+      prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div className="container mx-auto px-4 lg:px-16 py-8 lg:py-12 font-tenorSans">
       <div className="grid h-auto grid-cols-1 lg:grid-cols-2 gap-8">
@@ -96,20 +94,6 @@ const ImageAndDescription = () => {
           <div className="absolute top-0 left-0 p-2 text-xs font-playfair">
             {currentImage + 1} / {product.images.length}
           </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={handlePrevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-600 bg-transparent"
-          >
-            <FaAngleLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={handleNextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 bg-transparent"
-          >
-            <FaAngleRight className="w-6 h-6" />
-          </button>
         </div>
 
         {/* Product Details */}

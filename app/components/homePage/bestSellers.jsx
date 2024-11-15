@@ -1,13 +1,55 @@
-// BestSellers Component (Updated to show first image in `images` array)
+'use client';
 
 import Image from 'next/image'; 
 import Link from 'next/link';
+import { useState } from 'react';
 import { ProductsData } from './ProductsData';
 
 const BestSellers = ({ relatedProducts }) => {
   const productsToShow = relatedProducts && relatedProducts.length > 0
     ? relatedProducts
     : ProductsData.slice(0, 4); // Show best sellers if no related products provided
+  
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [currentImages, setCurrentImages] = useState(Array(productsToShow.length).fill(0)); // Default to the first image for each product
+
+  // Handle swipe gestures
+  const handleTouchStart = (e) => {
+    const touchStart = e.touches[0].clientX;
+    setTouchStart(touchStart);
+  };
+
+  const handleTouchEnd = (e, index) => {
+    const touchEnd = e.changedTouches[0].clientX;
+    setTouchEnd(touchEnd);
+
+    if (touchStart - touchEnd > 50) {
+      // Swipe left (next image)
+      handleNextImage(index);
+    }
+    if (touchEnd - touchStart > 50) {
+      // Swipe right (previous image)
+      handlePrevImage(index);
+    }
+  };
+
+  const handleNextImage = (index) => {
+    setCurrentImages((prevIndex) => {
+      const updatedIndex = [...prevIndex];
+      updatedIndex[index] = (updatedIndex[index] + 1) % productsToShow[index].images.length;
+      return updatedIndex;
+    });
+  };
+
+  const handlePrevImage = (index) => {
+    setCurrentImages((prevIndex) => {
+      const updatedIndex = [...prevIndex];
+      updatedIndex[index] = 
+        updatedIndex[index] === 0 ? productsToShow[index].images.length - 1 : updatedIndex[index] - 1;
+      return updatedIndex;
+    });
+  };
 
   return (
     <section className="py-8 bg-gray-50 font-tenorSans">
@@ -17,15 +59,19 @@ const BestSellers = ({ relatedProducts }) => {
         </h2>
 
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {productsToShow.map((product) => (
+          {productsToShow.map((product, index) => (
             <div
               key={product.id}
               className="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative"
             >
               <Link href={product.link}>
-                <div className="relative w-full aspect-w-4 aspect-h-5">
+                <div 
+                  className="relative w-full aspect-w-4 aspect-h-5"
+                  onTouchStart={handleTouchStart}
+                  onTouchEnd={(e) => handleTouchEnd(e, index)}
+                >
                   <Image
-                    src={product.images[0]} // Shows the first image in the `images` array
+                    src={product.images[currentImages[index]]} // Dynamic image index
                     alt={product.name}
                     layout="responsive"
                     width={450}
