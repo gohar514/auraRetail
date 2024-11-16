@@ -7,11 +7,11 @@ export const ProductsData = [
     price: 120,
     images: [
       "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
-      "https://corio.pk/cdn/shop/files/JC-909_1080x.jpg?v=1702365860",
-      "https://corio.pk/cdn/shop/files/01_1b3b7122-33b0-4673-9ba6-307784a9aeb3_1080x.jpg?v=1730976835",
-      "https://corio.pk/cdn/shop/files/01_1b3b7122-33b0-4673-9ba6-307784a9aeb3_1080x.jpg?v=1730976835",
       "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
-      "https://corio.pk/cdn/shop/files/JC-909_1080x.jpg?v=1702365860"
+      "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
+      "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
+      "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915",
+      "https://corio.pk/cdn/shop/files/01_6080c547-0819-42a3-b4e7-8ed25a4fa02e_1080x.jpg?v=1730974915"
     ],
     link: "/product/1",
     description: "Discover the perfect blend of fashion and function with our roomy and elegant Shoulder bag...",
