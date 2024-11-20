@@ -616,7 +616,7 @@ const ImageAndDescription = () => {
             <div className="text-base text-gray-600">Quantity</div>
             <div className="flex items-center space-x-4">
               <button
-                className="bg-gray-300 text-gray-800 rounded-md px-2 py-1"
+                className="bg-gray-300 text-gray-800 rounded-md w-6 h-8 text-xl flex justify-center items-center  "
                 onClick={() => handleQuantityChange(-1)}
                 aria-label="Decrease quantity"
                 disabled={quantity === 1}
@@ -625,7 +625,7 @@ const ImageAndDescription = () => {
               </button>
               <span className="text-lg">{quantity}</span>
               <button
-                className="bg-gray-300 text-gray-800 rounded-md px-2 py-1"
+                className="bg-gray-300 text-gray-800 rounded-md w-6 h-8 "
                 onClick={() => handleQuantityChange(1)}
                 aria-label="Increase quantity"
               >

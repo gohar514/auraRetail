@@ -1,3 +1,43 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// model Order {
+//   id           Int        @id @default(autoincrement())
+//   email        String
+//   firstName    String
+//   secondName   String
+//   country      String
+//   province     String
+//   city         String
+//   area         String
+//   address      String
+//   apartment    String?
+//   mobile       String
+//   secondNumber String?
+//   postalCode   String?
+//   paymentMethod String
+//   totalAmount  Float
+//   totalQuantity Int
+//   cartItems    CartItem[]
+//   createdAt    DateTime    @default(now())
+// }
+
+// model CartItem {
+//   id        Int    @id @default(autoincrement())
+//   name      String
+//   quantity  Int
+//   price     Float
+//   order     Order   @relation(fields: [orderId], references: [id])
+//   orderId   Int
+//   createdAt DateTime @default(now())
+// }
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,24 +48,24 @@ datasource db {
 }
 
 model Order {
-  id           Int        @id @default(autoincrement())
-  email        String
-  firstName    String
-  secondName   String
-  country      String
-  province     String
-  city         String
-  area         String
-  address      String
-  apartment    String?
-  mobile       String
-  secondNumber String?
-  postalCode   String?
+  id            Int        @id @default(autoincrement())
+  email         String
+  firstName     String
+  secondName    String
+  country       String
+  province      String
+  city          String
+  area          String
+  address       String
+  apartment     String?
+  mobile        String
+  secondNumber  String?
+  postalCode    String?
   paymentMethod String
-  totalAmount  Float
+  totalAmount   Float
   totalQuantity Int
-  cartItems    CartItem[]
-  createdAt    DateTime    @default(now())
+  cartItems     CartItem[]
+  createdAt     DateTime    @default(now())
 }
 
 model CartItem {
@@ -37,3 +77,15 @@ model CartItem {
   orderId   Int
   createdAt DateTime @default(now())
 }
+
+
+model Review {
+  id          Int       @id @default(autoincrement())
+  name        String
+  rating      Int
+  description String?
+  productId   Int
+  createdAt   DateTime  @default(now())
+}
+
+
