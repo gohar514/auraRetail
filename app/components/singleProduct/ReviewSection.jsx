@@ -242,7 +242,7 @@ const ReviewSection = ({ productId }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 font-tenorSans">
+    <div className="max-w-2xl mx-auto  font-tenorSans">
       <h2 className="text-xl font-bold mb-4 font-playfair">Write A Review</h2>
 
       <form onSubmit={handleSubmit} className="mb-6 space-y-4">
