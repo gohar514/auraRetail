@@ -42,7 +42,17 @@ const ImageAndDescription = () => {
   // Lifecycle effect
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div>Loading...</div>;
+  if (!mounted)
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <motion.div
+          className="border-t-4 border-b-4 border-black w-16 h-16 rounded-full animate-spin"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+    );
   if (!product || !product.images?.length)
     return <div>Product not found or images unavailable.</div>;
 
@@ -88,7 +98,7 @@ const ImageAndDescription = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 lg:px-20 py-8 lg:py-12 font-tenorSans">
+    <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 font-tenorSans">
       <div className="grid h-auto grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Slider */}
         <div
