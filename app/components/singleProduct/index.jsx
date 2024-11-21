@@ -4,6 +4,7 @@ import ImageAndDescription from './ImageAndDescription';
 import BestSellers from '../homePage/bestSellers';
 import { ProductsData } from '../homePage/ProductsData';
 import ReviewSection from './ReviewSection';
+import ProductVideo from './ProductVideo';
 
 const SingleProduct = ({ productId }) => {
   // Example: Pick some related products
@@ -12,7 +13,19 @@ const SingleProduct = ({ productId }) => {
   return (
     <div>
       <ImageAndDescription />
-      <ReviewSection productId={productId}/>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4  ">
+  {/* Product Video Component */}
+  <div className='mx-2'>
+    <ProductVideo />
+  </div>
+
+  {/* Review Section Component */}
+  <div>
+    <ReviewSection productId={productId} />
+  </div>
+</div>
+      
       {/* Pass related products */}
       <BestSellers relatedProducts={relatedProducts} />
     </div>

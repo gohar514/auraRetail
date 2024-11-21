@@ -20,7 +20,8 @@ export const ProductsData = [
     gender: "Female",
     width: 16,
     height: 11,
-    discount: 40
+    discount: 40,
+   video: "5fwp1VyrRe0"
   },
     {
       id: 2,
@@ -42,7 +43,8 @@ export const ProductsData = [
         gender: "Female",
         width: 16,
         height: 11,
-        discount: 50
+        discount: 50,
+       video: "5fwp1VyrRe0"
     },
     {
       id: 3,
@@ -64,7 +66,8 @@ export const ProductsData = [
         gender: "Female",
         width: 16,
         height: 11,
-        discount: 60
+        discount: 60,
+        video: "5fwp1VyrRe0"
     },
     {
       id: 4,
@@ -86,7 +89,8 @@ export const ProductsData = [
        gender: "Female",
        width: 16,
        height: 11,
-       discount: 0
+       discount: 0,
+      video: "5fwp1VyrRe0"
     }
     // Add more products as necessary
 ];
