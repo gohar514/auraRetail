@@ -147,6 +147,7 @@
 import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
+import SuccessPopUp from "./SuccessPopUp"; // Import the SuccessPopup
 
 const ReviewSection = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -158,6 +159,8 @@ const ReviewSection = ({ productId }) => {
   const [error, setError] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0); // Track current review index
   const [startX, setStartX] = useState(null); // Track swipe start position
+  const [showPopup, setShowPopup] = useState(false); // State to control the popup visibility
+  const [popupMessage, setPopupMessage] = useState(""); // State for the popup message
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -194,6 +197,10 @@ const ReviewSection = ({ productId }) => {
         setReviews([newReview, ...reviews]);
         setFormData({ name: "", rating: 0, description: "" });
         setCurrentIndex(0); // Reset to the first review
+
+        // Show success popup
+        setPopupMessage("You have successfully added a review. Thank you!");
+        setShowPopup(true);
       } else {
         const data = await response.json();
         setError(data.error || "Error submitting review.");
@@ -230,13 +237,17 @@ const ReviewSection = ({ productId }) => {
     }
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false); // Close the popup when the button is clicked
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-4 font-tenorSans">
       <h2 className="text-xl font-bold mb-4 font-playfair">Write A Review</h2>
 
       <form onSubmit={handleSubmit} className="mb-6 space-y-4">
         <div>
-          <label htmlFor="name" className="block font-medium mb-1">
+          <label htmlFor="name" className="block  mb-1">
             Name
           </label>
           <input
@@ -251,7 +262,7 @@ const ReviewSection = ({ productId }) => {
         </div>
 
         <div>
-          <label className="block font-medium mb-1">Rating</label>
+          <label className="block  mb-1">Rating</label>
           <div className="flex">
             {[...Array(5)].map((_, index) => (
               <FaStar
@@ -266,7 +277,7 @@ const ReviewSection = ({ productId }) => {
         </div>
 
         <div>
-          <label htmlFor="description" className="block font-medium mb-1">
+          <label htmlFor="description" className="block  mb-1">
             Description (Optional)
           </label>
           <textarea
@@ -295,60 +306,73 @@ const ReviewSection = ({ productId }) => {
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div
-          className="flex transition-transform duration-500"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              className="w-full flex-shrink-0 py-4 px-8 border rounded flex flex-col gap-3"
-            >
-              <div className="flex justify-between items-center">
-                <div className="text-base font-bold font-playfair">
-                  {review.name}
+        {reviews.length === 0 ? (
+          <p className="text-center text-gray-500">Be the First to Review this product</p>
+        ) : (
+          <div
+            className="flex transition-transform duration-500"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="w-full flex-shrink-0 py-4 px-8 border rounded flex flex-col gap-3"
+              >
+                <div className="flex justify-between items-center">
+                  <div className="text-base font-bold font-playfair">
+                    {review.name.charAt(0).toUpperCase() + review.name.slice(1)}
+                  </div>
+                  <div>{new Date(review.createdAt).toLocaleDateString()}</div>
                 </div>
-                <div>{new Date(review.createdAt).toLocaleDateString()}</div>
-              </div>
 
-              <div className="flex">
-                {[...Array(5)].map((_, idx) => (
-                  <FaStar
-                    key={idx}
-                    className={`${
-                      review.rating > idx ? "text-gray-800" : "text-gray-300"
-                    }`}
-                  />
-                ))}
+                <div className="flex">
+                  {[...Array(5)].map((_, idx) => (
+                    <FaStar
+                      key={idx}
+                      className={`${
+                        review.rating > idx ? "text-gray-800" : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p>{review.description || "No description provided."}</p>
               </div>
-              <p>{review.description || "No description provided."}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <button
-          onClick={() => handleNavigation("prev")}
-          className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 ${
-            currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={currentIndex === 0}
-        >
-          <FaArrowLeftLong />
-        </button>
-        <button
-          onClick={() => handleNavigation("next")}
-          className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 ${
-            currentIndex === reviews.length - 1
-              ? "opacity-50 cursor-not-allowed"
-              : ""
-          }`}
-          disabled={currentIndex === reviews.length - 1}
-        >
-          <FaArrowRightLong />
-        </button>
+        {reviews.length > 0 && (
+          <>
+            <button
+              onClick={() => handleNavigation("prev")}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 ${
+                currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={currentIndex === 0}
+            >
+              <FaArrowLeftLong />
+            </button>
+            <button
+              onClick={() => handleNavigation("next")}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 ${
+                currentIndex === reviews.length - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={currentIndex === reviews.length - 1}
+            >
+              <FaArrowRightLong />
+            </button>
+          </>
+        )}
       </div>
+
+      {showPopup && (
+        <SuccessPopUp message={popupMessage} onClose={handleClosePopup} />
+      )}
     </div>
   );
 };
 
 export default ReviewSection;
+

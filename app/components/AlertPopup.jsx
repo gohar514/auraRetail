@@ -80,8 +80,10 @@ const AlertPopup = ({ message, onClose }) => {
 
         <div className="text-center">
         <div className='m-2 mx-3 p-0'>
-            <p className=' ml-1 md:ml-0 text-xl font-bold md:text-2xl lg:text-3xl'>Aura</p>
-            <p className='lg:ml-1.5 text-[5px] -mt-1 '>TIMELESS ELEGANCE</p>
+        <div className='flex flex-col justify-center items-center '>
+            <p className='  text-xl font-bold md:text-2xl lg:text-3xl'>Aura</p>
+            <p className=' text-[5px] -mt-1.5 '>TIMELESS ELEGANCE</p>
+            </div>
 
             </div>
           <p className="text-gray-600 text-lg mb-4">{message}</p>
