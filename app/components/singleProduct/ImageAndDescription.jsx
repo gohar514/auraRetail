@@ -13,9 +13,11 @@ import { motion } from "framer-motion";
 import { FaAngleLeft , FaAngleRight} from "react-icons/fa6";
 import Image from "next/image";
 import fallbackImage from "@/assets/static_image_aura_with_text.png"; // Adjust the path based on your folder structure
+import { useRef } from "react";
 
 
 const ImageAndDescription = () => {
+  const fallbackRef = useRef(null);
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -103,77 +105,75 @@ const ImageAndDescription = () => {
 
   return (
     <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 font-tenorSans">
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Image Slider */}
-        <div
-  className="relative  bg-white rounded-lg flex items-start justify-center overflow-hidden"
-  onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
-  onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)}
->
-
-<motion.div
-      key={currentImage}
-      initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
-      animate={{ x: "0%", opacity: 1 }}
-      exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="lg:p-8"
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-sm:place-items-center">
+       {/* Image Slider */}
+<div
+      className="relative w-[350px] h-[350px] sm:h-[500px] sm:w-[500px] md:h-[700px] md:w-[700px] lg:h-[500px] lg:w-[500px] bg-white rounded-lg flex items-center  justify-center overflow-hidden"
+      onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
+      onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)}
+       // Fixed size to prevent collapsing
     >
-      <div className="relative w-full h-full bg-gray-200 rounded-lg overflow-hidden">
-        {/* Placeholder with pulsing animation */}
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 via-gray-100 to-gray-50 z-0 rounded-lg"></div>
-
+      <motion.div
+        key={currentImage}
+        initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
+        animate={{ x: "0%", opacity: 1 }}
+        exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="lg:p-8 relative w-full h-full flex items-center"
+      >
         {/* Fallback Image */}
-        <Image
-          src={fallbackImage}
-          alt="Fallback Placeholder"
-          layout="responsive"
-          width={450}
-          height={562}
-          objectFit="cover"
-          className="absolute inset-0 max-w-full h-full object-cover rounded-lg z-10"
-        />
+        <div
+          ref={fallbackRef} // Attach the ref
+          className="absolute top-0 left-0 w-full h-full z-10 flex items-center justify-center bg-white"
+        >
+          <Image
+            src={fallbackImage} // Fallback image path
+            alt="Fallback Aura"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
 
-        {/* Main Image */}
+        {/* Actual Image */}
         <Image
           src={product.images[currentImage]}
           alt={product.name}
-          layout="responsive"
-          width={450}
-          height={562}
+          layout="fill"
           objectFit="cover"
-          className="relative max-w-full bg-cover h-full rounded-lg z-20"
+          className=" flex justify-center items-center w-full h-full rounded-lg z-20"
+
           quality={75}
-          priority
           onLoadingComplete={() => {
-            // Remove placeholder on image load
-            const placeholder = document.querySelector(".animate-pulse");
-            if (placeholder) placeholder.style.display = "none";
+            // Hide the fallback image when the main image loads
+            if (fallbackRef.current) {
+              fallbackRef.current.style.display = "none";
+            }
           }}
         />
+      </motion.div>
+
+      {/* Image Counter */}
+      <div className="absolute top-0 left-0 p-2 text-xs font-playfair z-30">
+        {currentImage + 1} / {product.images.length}
       </div>
-    </motion.div>
 
-  <div className="absolute top-0 left-0 p-2 text-xs font-playfair">
-    {currentImage + 1} / {product.images.length}
-  </div>
+      {/* Previous Button */}
+      <button
+        onClick={() => handlePrevImage(-1)}
+        className="hidden md:block absolute left-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent z-30"
+      >
+        <FaAngleLeft className="w-6 h-6" />
+      </button>
 
-  {/* Previous Button */}
-  <button
-    onClick={() => handlePrevImage(-1)}
-    className="hidden md:block absolute left-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent"
-  >
-    <FaAngleLeft className="w-6 h-6 " />
-  </button>
-
-  {/* Next Button */}
-  <button
-    onClick={() => handleNextImage(1)}
-    className="hidden md:block absolute right-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent"
-  >
-    <FaAngleRight className="w-6 h-6  " />
-  </button>
-</div>
+      {/* Next Button */}
+      <button
+        onClick={() => handleNextImage(1)}
+        className="hidden md:block absolute right-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent z-30"
+      >
+        <FaAngleRight className="w-6 h-6" />
+      </button>
+    </div>
 
         {/* Product Details */}
         <div className="flex flex-col space-y-4 md:space-y-6">
