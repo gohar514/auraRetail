@@ -6,6 +6,7 @@ import { removeFromCart, addToCart } from "@/app/store/cartSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { RxDotFilled } from "react-icons/rx";
+import Image from "next/image";
 
 const CartComponent = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -63,7 +64,7 @@ const CartComponent = () => {
                         >
                             {/* Product Image */}
                             <div className="w-1/4 flex justify-start items-start mb-4 md:mb-0">
-                                <img
+                            <Image
                                     src={item.images[0]}  // Updated to display the first image in the array
                                     alt={item.name}
                                     className="w-auto h-auto object-cover rounded-lg"

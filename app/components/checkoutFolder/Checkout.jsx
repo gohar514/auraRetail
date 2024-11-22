@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { clearCart } from "@/app/store/cartSlice";
 import { useDispatch } from "react-redux";
 import { MdEmail } from "react-icons/md";
+import Image from "next/image";
 
 const Checkout = () => {
   const router = useRouter();
@@ -321,7 +322,7 @@ const Checkout = () => {
                     <div key={item.id} className="flex justify-between p-2 text-xs items-center">
                       <div className="flex items-center">
                         <div className="relative">
-                          <img
+                        <Image
                             src={item.images[0]}
                             alt={item.name}
                             className="w-10 h-10  object-cover rounded"

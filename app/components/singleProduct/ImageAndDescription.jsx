@@ -11,6 +11,9 @@ import Link from "next/link";
 import AlertPopup from "../AlertPopup";
 import { motion } from "framer-motion";
 import { FaAngleLeft , FaAngleRight} from "react-icons/fa6";
+import Image from "next/image";
+import fallbackImage from "@/assets/static_image_aura_with_text.png"; // Adjust the path based on your folder structure
+
 
 const ImageAndDescription = () => {
   const { id } = useParams();
@@ -29,6 +32,7 @@ const ImageAndDescription = () => {
     () => ProductsData.find((p) => p.id === parseInt(id)) || null,
     [id]
   );
+  console.log(product.color)
 
   // Calculate discounted price
   const discountedPrice = useMemo(
@@ -99,23 +103,57 @@ const ImageAndDescription = () => {
 
   return (
     <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 font-tenorSans">
-      <div className="grid h-auto grid-cols-1 lg:grid-cols-2 gap-8">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Slider */}
         <div
-  className="relative lg:h-1/2 bg-white rounded-lg flex items-start justify-center overflow-hidden"
+  className="relative  bg-white rounded-lg flex items-start justify-center overflow-hidden"
   onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
   onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)}
 >
-  <motion.img
-    key={currentImage}
-    src={product.images[currentImage]}
-    alt={`${product.name} Image ${currentImage + 1}`}
-    initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
-    animate={{ x: "0%", opacity: 1 }}
-    exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
-    transition={{ duration: 0.7, ease: "easeInOut" }}
-    className="max-w-full bg-cover h-full rounded-lg "
-  />
+
+<motion.div
+      key={currentImage}
+      initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
+      animate={{ x: "0%", opacity: 1 }}
+      exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="lg:p-8"
+    >
+      <div className="relative w-full h-full bg-gray-200 rounded-lg overflow-hidden">
+        {/* Placeholder with pulsing animation */}
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 via-gray-100 to-gray-50 z-0 rounded-lg"></div>
+
+        {/* Fallback Image */}
+        <Image
+          src={fallbackImage}
+          alt="Fallback Placeholder"
+          layout="responsive"
+          width={450}
+          height={562}
+          objectFit="cover"
+          className="absolute inset-0 max-w-full h-full object-cover rounded-lg z-10"
+        />
+
+        {/* Main Image */}
+        <Image
+          src={product.images[currentImage]}
+          alt={product.name}
+          layout="responsive"
+          width={450}
+          height={562}
+          objectFit="cover"
+          className="relative max-w-full bg-cover h-full rounded-lg z-20"
+          quality={75}
+          priority
+          onLoadingComplete={() => {
+            // Remove placeholder on image load
+            const placeholder = document.querySelector(".animate-pulse");
+            if (placeholder) placeholder.style.display = "none";
+          }}
+        />
+      </div>
+    </motion.div>
+
   <div className="absolute top-0 left-0 p-2 text-xs font-playfair">
     {currentImage + 1} / {product.images.length}
   </div>
@@ -123,7 +161,7 @@ const ImageAndDescription = () => {
   {/* Previous Button */}
   <button
     onClick={() => handlePrevImage(-1)}
-    className="hidden md:block absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-600 bg-transparent"
+    className="hidden md:block absolute left-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent"
   >
     <FaAngleLeft className="w-6 h-6 " />
   </button>
@@ -131,7 +169,7 @@ const ImageAndDescription = () => {
   {/* Next Button */}
   <button
     onClick={() => handleNextImage(1)}
-    className="hidden md:block absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 bg-transparent"
+    className="hidden md:block absolute right-2 top-1/4 transform -translate-y-1/2 text-gray-600 bg-transparent"
   >
     <FaAngleRight className="w-6 h-6  " />
   </button>
@@ -248,5 +286,4 @@ const ImageAndDescription = () => {
 };
 
 export default ImageAndDescription;
-
 

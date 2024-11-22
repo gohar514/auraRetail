@@ -16,7 +16,7 @@ const SingleProduct = ({ productId }) => {
       
       <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 grid grid-cols-1 md:grid-cols-2 gap-4  ">
   {/* Product Video Component */}
-  <div >
+  <div  >
     <ProductVideo />
   </div>
 
