@@ -1,146 +1,4 @@
-// "use client";
 
-// import { useState, useEffect } from "react";
-// import { FaStar } from "react-icons/fa";
-
-// const ReviewSection = ({ productId }) => {
-//   const [reviews, setReviews] = useState([]);
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     rating: 0,
-//     description: "",
-//   });
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     fetch(`/api/reviews/${productId}`)
-//       .then((res) => res.json())
-//       .then((data) => setReviews(data))
-//       .catch((err) => console.error(err));
-//   }, [productId]);
-
-//   const handleRating = (ratingValue) => {
-//     setFormData({ ...formData, rating: ratingValue });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     if (!formData.name || !formData.rating) {
-//       setError("Name and rating are required.");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch(`/api/reviews/${productId}`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(formData),
-//       });
-
-//       if (response.ok) {
-//         const newReview = await response.json();
-//         setReviews([newReview, ...reviews]);
-//         setFormData({ name: "", rating: 0, description: "" });
-//       } else {
-//         const data = await response.json();
-//         setError(data.error || "Error submitting review.");
-//       }
-//     } catch (err) {
-//       console.error("lala",err);
-//       setError("Error submitting review.");
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-2xl mx-auto p-4">
-//       <h2 className="text-xl font-bold mb-4">Reviews</h2>
-
-//       <form onSubmit={handleSubmit} className="mb-6 space-y-4">
-//         <div>
-//           <label htmlFor="name" className="block font-medium mb-1">
-//             Name
-//           </label>
-//           <input
-//             type="text"
-//             id="name"
-//             value={formData.name}
-//             onChange={(e) =>
-//               setFormData({ ...formData, name: e.target.value })
-//             }
-//             className="w-full border rounded p-2"
-//           />
-//         </div>
-
-//         <div>
-//           <label className="block font-medium mb-1">Rating</label>
-//           <div className="flex">
-//             {[...Array(5)].map((_, index) => (
-//               <FaStar
-//                 key={index}
-//                 className={`cursor-pointer ${
-//                   formData.rating > index ? "text-yellow-400" : "text-gray-300"
-//                 }`}
-//                 onClick={() => handleRating(index + 1)}
-//               />
-//             ))}
-//           </div>
-//         </div>
-
-//         <div>
-//           <label htmlFor="description" className="block font-medium mb-1">
-//             Description (Optional)
-//           </label>
-//           <textarea
-//             id="description"
-//             value={formData.description}
-//             onChange={(e) =>
-//               setFormData({ ...formData, description: e.target.value })
-//             }
-//             className="w-full border rounded p-2"
-//           />
-//         </div>
-
-//         {error && <div className="text-red-500">{error}</div>}
-
-//         <button
-//           type="submit"
-//           className="bg-black text-white p-2 rounded hover:bg-gray-700"
-//         >
-//           Submit Review
-//         </button>
-//       </form>
-
-//       <div className="space-y-4">
-//         {reviews.length > 0 ? (
-//           reviews.map((review) => (
-//             <div key={review.id} className="border p-4 rounded">
-//               <div className="font-medium">{review.name}</div>
-//               <div className="flex">
-//                 {[...Array(5)].map((_, index) => (
-//                   <FaStar
-//                     key={index}
-//                     className={`${
-//                       review.rating > index ? "text-yellow-400" : "text-gray-300"
-//                     }`}
-//                   />
-//                 ))}
-//               </div>
-//               <p>{review.description || "No description provided."}</p>
-//             </div>
-//           ))
-//         ) : (
-//           <p>No reviews yet. Be the first to review!</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ReviewSection;
 
 "use client";
 
@@ -148,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import SuccessPopUp from "./SuccessPopUp"; // Import the SuccessPopup
+import { motion } from "framer-motion";
 
 const ReviewSection = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -243,12 +102,44 @@ const ReviewSection = ({ productId }) => {
 
   return (
     <div className="max-w-2xl mx-auto  font-tenorSans">
-      <h2 className="text-xl font-bold mb-4 font-playfair">Write A Review</h2>
+      
 
-      <form onSubmit={handleSubmit} className="mb-6 space-y-4">
+      <section className="relative bg-gradient-to-b from-gray-100 to-gray-200 text-black py-12 px-4 sm:px-8 lg:px-12 rounded-lg shadow-xl max-w-4xl mx-auto my-8 overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.15, scale: 1 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
+          className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 rounded-full h-96 w-96 absolute -top-20 -left-20 blur-2xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.2, scale: 1.1 }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
+          className="bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 rounded-full h-72 w-72 absolute bottom-0 -right-16 blur-2xl"
+        />
+      </div>
+
+      {/* Form Title */}
+      <h2 className="text-xl font-bold  text-center font-playfair">
+        Share Your Experience
+      </h2>
+      <p className="text-gray-700 text-sm text-center mt-2">
+        We value your feedback! Please take a moment to review your purchase.
+      </p>
+
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 mt-6 relative z-10 max-w-full"
+      >
+        {/* Name Field */}
         <div>
-          <label htmlFor="name" className="block  mb-1">
-            Name
+          <label htmlFor="name" className="block   mb-2">
+            <span className="flex items-center gap-1">
+               Name<span className="text-red-500">*</span>
+            </span>
           </label>
           <input
             type="text"
@@ -257,28 +148,52 @@ const ReviewSection = ({ productId }) => {
             onChange={(e) =>
               setFormData({ ...formData, name: e.target.value })
             }
-            className="w-full border rounded p-2"
+            placeholder="Name"
+            className="w-full p-2 rounded-lg border border-gray-600  focus:outline-none  shadow-sm"
           />
         </div>
 
+        {/* Rating Field */}
         <div>
-          <label className="block  mb-1">Rating</label>
-          <div className="flex">
-            {[...Array(5)].map((_, index) => (
-              <FaStar
-                key={index}
-                className={`cursor-pointer ${
-                  formData.rating > index ? "text-black" : "text-gray-300"
-                }`}
-                onClick={() => handleRating(index + 1)}
-              />
-            ))}
-          </div>
+          <label className="block   mb-2">
+            <span className="flex items-center gap-1">
+               Rating<span className="text-red-500">*</span>
+            </span>
+          </label>
+          <div className="flex space-x-2">
+  {[...Array(5)].map((_, index) => (
+    <motion.div
+      key={index}
+      whileHover={{ scale: 1.1 }}
+      className={`cursor-pointer ${
+        formData.rating > index ? "text-yellow-400" : "text-gray-500"
+      }`}
+      onClick={() => handleRating(index + 1)}
+    >
+      <FaStar
+        className={`text-3xl ${
+          formData.rating > index ? "text-yellow-400" : "text-transparent"
+        }`}
+        style={{
+          stroke: "black",
+          strokeWidth: 2,
+          fill: formData.rating > index ? "currentColor" : "none",
+        }}
+      />
+    </motion.div>
+  ))}
+</div>
         </div>
 
+        {/* Description Field */}
         <div>
-          <label htmlFor="description" className="block  mb-1">
-            Description (Optional)
+          <label
+            htmlFor="description"
+            className="block  mb-2"
+          >
+            <span className="flex items-center gap-2">
+               Description 
+            </span>
           </label>
           <textarea
             id="description"
@@ -286,20 +201,33 @@ const ReviewSection = ({ productId }) => {
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
             }
-            className="w-full border rounded p-2"
+            placeholder="Write your thoughts here..."
+            className="w-full p-2 rounded-lg border border-gray-600   focus:outline-none  shadow-sm"
           />
         </div>
 
-        {error && <div className="text-red-500">{error}</div>}
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-red-500 text-sm"
+          >
+            {error}
+          </motion.div>
+        )}
 
-        <button
+        {/* Submit Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           type="submit"
-          className="bg-black text-white p-2 rounded font-playfair hover:bg-gray-700"
+          className="w-full bg-gradient-to-r from-white via-gray-400 to-gray-900 text-gray-100 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring  shadow-lg"
         >
           Submit Review
-        </button>
+        </motion.button>
       </form>
-
+    </section>
       <h2 className="text-xl font-bold mb-4 font-playfair">Reviews</h2>
       <div
         className="relative overflow-hidden"
