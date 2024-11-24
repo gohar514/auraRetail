@@ -12,13 +12,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 font-playfair">Company</h3>
             <ul className='text-sm'>
               <li className="mb-2">
-                <Link href="/about" className="hover:underline">About Us</Link>
+                <Link href="/about#about-us" className="hover:underline">About Us</Link>
               </li>
               <li className="mb-2">
-                <Link href="/collections" className="hover:underline">Collections</Link>
+                <Link href="/about#collections" className="hover:underline">Collections</Link>
               </li>
               <li className="mb-2">
-                <Link href="/contact" className="hover:underline">Contact Us</Link>
+                <Link href="/about#contact-us" className="hover:underline">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -26,13 +26,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 whitespace-nowrap font-playfair">Customer Service</h3>
             <ul className='text-sm'>
               <li className="mb-2">
-                <Link href="/shipping" className="hover:underline whitespace-nowrap">Shipping & Returns</Link>
+                <Link href="/about#shipping-returns" className="hover:underline whitespace-nowrap">Shipping & Returns</Link>
               </li>
               <li className="mb-2">
-                <Link href="/faqs" className="hover:underline mx-auto ">FAQs</Link>
+                <Link href="/about#faqs" className="hover:underline mx-auto ">FAQs</Link>
               </li>
               <li className="mb-2">
-                <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
+                <Link href="/about#privacy-policy" className="hover:underline">Privacy Policy</Link>
               </li>
             </ul>
           </div>
