@@ -222,7 +222,7 @@ const ReviewSection = ({ productId }) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           type="submit"
-          className="w-full bg-gradient-to-r from-white via-gray-400 to-gray-900 text-gray-100 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring  shadow-lg"
+          className="w-full bg-black text-white py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none  shadow-lg"
         >
           Submit Review
         </motion.button>
