@@ -66,6 +66,9 @@ const CartComponent = () => {
                             <div className="w-1/4 flex justify-start items-start mb-4 md:mb-0">
                             <Image
                                     src={item.images[0]}  // Updated to display the first image in the array
+
+                                    width={200} // Example width in pixels
+                                    height={200} // Example height in pixels
                                     alt={item.name}
                                     className="w-auto h-auto object-cover rounded-lg"
                                 />

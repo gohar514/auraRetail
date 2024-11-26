@@ -18,7 +18,7 @@ const ProductVideo = () => {
         
   {/* Video Embed Section */}
 {product.video && (
-  <div className="mt-8">
+  <div className="">
     <h2 className="text-xl font-semibold text-gray-900 font-playfair">
       Watch Video
     </h2>

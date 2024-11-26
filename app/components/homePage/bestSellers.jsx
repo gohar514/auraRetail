@@ -1,63 +1,49 @@
-
-
-
-
-"use client";
-
-import Image from "next/image"; 
+"use client"
+import React, { useState, useMemo, useCallback } from "react";
+import { ProductsData } from "./ProductsData"; // Data
+import ProductItem from "./ProductItem"; // ProductItem Component
 import Link from "next/link";
-import { useState } from "react";
-import { ProductsData } from "./ProductsData";
-import { motion } from "framer-motion"; // Import motion for animations
 
+// BestSellers Component
 const BestSellers = ({ relatedProducts }) => {
-  // Determine products to show: Related products or default best sellers
-  const productsToShow = relatedProducts?.length > 0
-    ? relatedProducts
-    : ProductsData.slice(0, 4);
+  const productsToShow = useMemo(() => (
+    relatedProducts?.length > 0 ? relatedProducts : ProductsData.slice(0, 4)
+  ), [relatedProducts]);
 
-  // State to manage swipe gestures and image indices per product
   const [touchStart, setTouchStart] = useState(0);
   const [currentImages, setCurrentImages] = useState(
-    Array(productsToShow.length).fill(0) // Default image index for each product
+    Array(productsToShow.length).fill(0)
   );
   const [directions, setDirections] = useState(
-    Array(productsToShow.length).fill(0) // Manage swipe direction for each product
+    Array(productsToShow.length).fill(0)
   );
 
-  // Handle the start of a touch gesture
-  const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
-
-  // Handle the end of a touch gesture and determine swipe direction
-  const handleTouchEnd = (e, index) => {
+  const handleTouchStart = useCallback((e) => setTouchStart(e.touches[0].clientX), []);
+  const handleTouchEnd = useCallback((e, index) => {
     const touchEnd = e.changedTouches[0].clientX;
-    if (touchStart - touchEnd > 50) handleNextImage(index); // Swipe left
-    if (touchEnd - touchStart > 50) handlePrevImage(index); // Swipe right
-  };
+    if (touchStart - touchEnd > 50) handleNextImage(index);
+    if (touchEnd - touchStart > 50) handlePrevImage(index);
+  }, [touchStart]);
 
-  // Show the next image for a product
-  const handleNextImage = (index) => {
+  const handleNextImage = useCallback((index) => {
     setDirections((prev) => {
       const updated = [...prev];
-      updated[index] = 1; // Swipe left direction
+      updated[index] = 1;
       return updated;
     });
-
     setCurrentImages((prev) => {
       const updated = [...prev];
       updated[index] = (updated[index] + 1) % productsToShow[index].images.length;
       return updated;
     });
-  };
+  }, [productsToShow]);
 
-  // Show the previous image for a product
-  const handlePrevImage = (index) => {
+  const handlePrevImage = useCallback((index) => {
     setDirections((prev) => {
       const updated = [...prev];
-      updated[index] = -1; // Swipe right direction
+      updated[index] = -1;
       return updated;
     });
-
     setCurrentImages((prev) => {
       const updated = [...prev];
       updated[index] =
@@ -66,87 +52,27 @@ const BestSellers = ({ relatedProducts }) => {
           : updated[index] - 1;
       return updated;
     });
-  };
+  }, [productsToShow]);
 
   return (
     <section className="py-8 bg-gray-50 font-tenorSans">
       <div className="container mx-auto px-6">
-        {/* Section Heading */}
         <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6 text-gray-900 font-playfair">
           {relatedProducts?.length > 0 ? "Related Products" : "Best Sellers"}
         </h2>
-
-        {/* Products Grid */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {productsToShow.map((product, index) => (
-            <div
+            <ProductItem
               key={product.id}
-              className="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative"
-            >
-              {/* Product Link and Image with Swipe Gesture */}
-              <Link href={product.link}>
-                <div
-                  className="relative w-full aspect-w-4 aspect-h-5"
-                  onTouchStart={handleTouchStart}
-                  onTouchEnd={(e) => handleTouchEnd(e, index)}
-                >
-                  {/* Image Transition */}
-                  <motion.div
-                    key={currentImages[index]}
-                    initial={{ x: directions[index] === 1 ? "100%" : "-100%", opacity: 0 }}
-                    animate={{ x: "0%", opacity: 1 }}
-                    exit={{ x: directions[index] === 1 ? "-100%" : "100%", opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="w-full h-full"
-                  >
-                    <Image
-                      src={product.images[currentImages[index]]}
-                      alt={product.name}
-                      layout="responsive"
-                      width={450}
-                      height={562}
-                      objectFit="cover"
-                      className="group-hover:scale-105 transition-transform duration-300"
-                      quality={75}
-                      priority
-                    />
-                  </motion.div>
-
-                  {/* Discount Badge */}
-                  {product.discount > 0 && (
-                    <div className="absolute top-0 right-0 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold">
-                      {product.discount}%
-                    </div>
-                  )}
-                </div>
-              </Link>
-
-              {/* Product Details */}
-              <div className="p-4 text-center">
-                <h3 className="text-sm font-semibold text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
-                  {product.name}
-                </h3>
-                <div className="flex items-center justify-center gap-2 mt-2">
-                  {/* Discounted Price */}
-                  <div className="text-base text-red-600">
-                    <span className="mr-1">Rs.</span>
-                    {product.discount > 0
-                      ? (product.price * (1 - product.discount / 100)).toFixed(2)
-                      : product.price.toFixed(2)}
-                  </div>
-                  {/* Original Price (if discounted) */}
-                  {product.discount > 0 && (
-                    <div className="text-base text-gray-500 line-through">
-                      Rs.{product.price.toFixed(2)}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+              product={product}
+              index={index}
+              currentImageIndex={currentImages[index]}
+              direction={directions[index]}
+              handleTouchStart={handleTouchStart}
+              handleTouchEnd={handleTouchEnd}
+            />
           ))}
         </div>
-
-        {/* View All Button */}
         <div className="flex justify-center mt-12">
           <Link href="/products">
             <p className="inline-block py-3 px-6 rounded-lg text-lg font-semibold transition-colors duration-300 font-playfair">

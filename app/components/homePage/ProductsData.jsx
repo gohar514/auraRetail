@@ -1,10 +1,3 @@
-// products.js (updated)
-import image1 from "@/assets/shoes.png";
-import image2 from "@/assets/image2.png";
-import image3 from "@/assets/image3.png";
-import image4 from "@/assets/image4.png";
-import image5 from "@/assets/image5.png";
-import image6 from "@/assets/image6.png";
 
 
 export const ProductsData = [
@@ -13,12 +6,12 @@ export const ProductsData = [
     name: "Leather Crossbody Bag",
     price: 120,
     images: [
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      image6
+      "/assets/shoes.png",
+      "/assets/image2.png",
+      "/assets/image3.png",
+      "/assets/image4.png",
+      "/assets/image5.png",
+      "/assets/image6.png",
     ],
     link: "/product/1",
     description: "Discover the perfect blend of fashion and function with our roomy and elegant Shoulder bag...",
@@ -35,12 +28,12 @@ export const ProductsData = [
       name: "Classic Tote Bag",
       price: 180,
       images: [
-        image2,
-        image1,
-        image3,
-        image4,
-        image5,
-        image6
+       "/assets/shoes.png",
+      "/assets/image2.png",
+      "/assets/image3.png",
+      "/assets/image4.png",
+      "/assets/image5.png",
+      "/assets/image6.png",
       ],
       link: "/product/2",
       date: "2023-08-20",
@@ -58,12 +51,12 @@ export const ProductsData = [
       name: "Elegant Handbag",
       price: 220,
       images: [
-        image3,
-        image1,
-        image2,
-        image5,
-        image4,
-        image6
+        "/assets/shoes.png",
+      "/assets/image2.png",
+      "/assets/image3.png",
+      "/assets/image4.png",
+      "/assets/image5.png",
+      "/assets/image6.png",
       ],
       link: "/product/3",
       date: "2023-10-01",
@@ -81,12 +74,12 @@ export const ProductsData = [
       name: "Minimalist Handbag",
       price: 240,
       images: [
-        image4,
-        image3,
-        image2,
-        image1,
-        image5,
-        image6
+        "/assets/shoes.png",
+      "/assets/image2.png",
+      "/assets/image3.png",
+      "/assets/image4.png",
+      "/assets/image5.png",
+      "/assets/image6.png",
       ],
       link: "/product/4",
       date: "2023-10-10",

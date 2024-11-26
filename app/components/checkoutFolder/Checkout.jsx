@@ -325,6 +325,8 @@ const Checkout = () => {
                         <Image
                             src={item.images[0]}
                             alt={item.name}
+                            width={200} // Example width in pixels
+                            height={200} // Example height in pixels
                             className="w-10 h-10  object-cover rounded"
                           />
                           <span className="absolute -top-2 -right-2 bg-black bg-opacity-50 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">

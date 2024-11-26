@@ -8,6 +8,7 @@ import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import SuccessPopUp from "./SuccessPopUp"; // Import the SuccessPopup
 import { motion } from "framer-motion";
 
+
 const ReviewSection = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [formData, setFormData] = useState({
@@ -20,6 +21,9 @@ const ReviewSection = ({ productId }) => {
   const [startX, setStartX] = useState(null); // Track swipe start position
   const [showPopup, setShowPopup] = useState(false); // State to control the popup visibility
   const [popupMessage, setPopupMessage] = useState(""); // State for the popup message
+  const [popupReview, setPopupReview] = useState(null);
+
+ 
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -228,79 +232,168 @@ const ReviewSection = ({ productId }) => {
         </motion.button>
       </form>
     </section>
-      <h2 className="text-xl font-bold mb-4 font-playfair">Reviews</h2>
-      <div
-        className="relative overflow-hidden"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {reviews.length === 0 ? (
-          <p className="text-center text-gray-500">Be the First to Review this product</p>
-        ) : (
-          <div
-            className="flex transition-transform duration-500"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {reviews.map((review, index) => (
-              <div
-                key={index}
-                className="w-full flex-shrink-0 py-4 px-8 border rounded flex flex-col gap-3"
-              >
-                <div className="flex justify-between items-center">
-                  <div className="text-base font-bold font-playfair">
-                    {review.name.charAt(0).toUpperCase() + review.name.slice(1)}
-                  </div>
-                  <div>{new Date(review.createdAt).toLocaleDateString()}</div>
-                </div>
+    <h2 className="text-xl font-bold mb-4  text-black font-playfair">Reviews</h2>
 
-                <div className="flex">
-                  {[...Array(5)].map((_, idx) => (
-                    <FaStar
-                      key={idx}
-                      className={`${
-                        review.rating > idx ? "text-gray-800" : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <p>{review.description || "No description provided."}</p>
+<div
+  className="relative  overflow-hidden"
+  onTouchStart={handleTouchStart}
+  onTouchEnd={handleTouchEnd}
+>
+  {reviews.length === 0 ? (
+    <p className="text-center text-gray-500 text-lg">Be the First to Review this product</p>
+  ) : (
+    <div className="overflow-hidden relative ">
+    <div
+      className="flex   transition-transform duration-700 ease-in-out"
+      style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+    >
+      {reviews.map((review, index) => (
+        <div
+          key={index}
+          className="w-full flex-shrink-0 py-6 px-4 sm:px-6 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform transform duration-300"
+        >
+          {/* Review Header */}
+          <div className="grid grid-cols-1 gap-6 mb-6">
+            {/* Avatar */}
+            <div className="flex justify-center ">
+              <div className="w-14 h-14 rounded-full bg-gray-800 text-white flex justify-center items-center text-xl font-semibold">
+                {review.name.charAt(0).toUpperCase()}
               </div>
+            </div>
+  
+            {/* Name & Date */}
+            <div className=" flex flex-col justify-center text-center ">
+              <div className="text-xl font-bold text-gray-900">
+                {review.name.charAt(0).toUpperCase() + review.name.slice(1)}
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+  
+          {/* Star Rating */}
+          <div className="flex justify-center  mb-4 space-x-2">
+            {[...Array(5)].map((_, idx) => (
+              <FaStar
+                key={idx}
+                className={`${
+                  review.rating > idx ? "text-gray-800 transform scale-125" : "text-gray-300"
+                } transition-all duration-300`}
+                size={24}
+              />
             ))}
           </div>
-        )}
+  
+          {/* Review Description */}
+          <p className="text-gray-800 text-center leading-relaxed tracking-wide">
+                  {review.description.length > 10 ? (
+                    <>
+                      {review.description.substring(0, 10)}...
+                      <button
+                        onClick={() => setPopupReview(review)}
+                        className=" underline"
+                      >
+                        See More
+                      </button>
+                    </>
+                  ) : (
+                    review.description
+                  )}
+                </p>
+        </div>
+      ))}
+    </div>
+  
+    {/* Navigation Controls */}
+    {reviews.length > 1 && (
+      <>
+        <button
+          onClick={() => handleNavigation("prev")}
+          className={`absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-transparent   hover:bg-gray-700 transition duration-300 ${
+            currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={currentIndex === 0}
+        >
+          <FaArrowLeftLong size={20} />
+        </button>
+        <button
+          onClick={() => handleNavigation("next")}
+          className={`absolute right-2 top-1/2 -translate-y-1/2 p-2   transition duration-300 ${
+            currentIndex === reviews.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={currentIndex === reviews.length - 1}
+        >
+          <FaArrowRightLong size={20} />
+        </button>
+      </>
+    )}
+  </div>
+  
+  )}
 
-        {reviews.length > 0 && (
-          <>
-            <button
-              onClick={() => handleNavigation("prev")}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 ${
-                currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={currentIndex === 0}
-            >
-              <FaArrowLeftLong />
-            </button>
-            <button
-              onClick={() => handleNavigation("next")}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 ${
-                currentIndex === reviews.length - 1
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={currentIndex === reviews.length - 1}
-            >
-              <FaArrowRightLong />
-            </button>
-          </>
-        )}
-      </div>
+  {/* Navigation Arrows */}
+  
+</div>
 
-      {showPopup && (
-        <SuccessPopUp message={popupMessage} onClose={handleClosePopup} />
+{/* Optional Success Popup */}
+{showPopup && (
+  <SuccessPopUp message={popupMessage} onClose={handleClosePopup} />
+)}
+
+
+{/* Popup Modal */}
+{popupReview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white w-11/12 sm:w-3/4 lg:w-1/2 p-6 rounded-lg shadow-lg relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setPopupReview(null)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+            >
+              ✖
+            </button>
+
+            {/* Popup Review Content */}
+            <div className="grid grid-cols-1 gap-6 mb-6">
+              <div className="flex justify-center">
+                <div className="w-14 h-14 rounded-full bg-gray-800 text-white flex justify-center items-center text-xl font-semibold">
+                  {popupReview.name.charAt(0).toUpperCase()}
+                </div>
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-gray-900">
+                  {popupReview.name.charAt(0).toUpperCase() +
+                    popupReview.name.slice(1)}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {new Date(popupReview.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex justify-center mb-4 space-x-2">
+                {[...Array(5)].map((_, idx) => (
+                  <FaStar
+                    key={idx}
+                    className={`${
+                      popupReview.rating > idx
+                        ? "text-gray-800 transform scale-125"
+                        : "text-gray-300"
+                    } transition-all duration-300`}
+                    size={24}
+                  />
+                ))}
+              </div>
+              <p className="text-gray-800 text-center leading-relaxed tracking-wide">
+                {popupReview.description || "No description provided."}
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
 export default ReviewSection;
+
 
