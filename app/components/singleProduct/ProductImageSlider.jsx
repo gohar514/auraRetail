@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
-const ProductImageSlider = ({ images, fallbackImage, productName }) => {
+const ProductImageSlider = ({ images, productName }) => {
   const fallbackRef = useRef(null); // For fallback image handling
   const [currentImage, setCurrentImage] = useState(0); // Tracks the current image index
   const [touchStart, setTouchStart] = useState(0); // Tracks the starting touch position for swiping
@@ -46,7 +46,7 @@ const ProductImageSlider = ({ images, fallbackImage, productName }) => {
             className="absolute inset-0 z-10 flex items-center justify-center bg-white"
           >
             <Image
-              src={fallbackImage}
+              src="/assets/static_image_aura_with_text.png"
               alt={`${productName} fallback`}
               fill
               className="object-cover"

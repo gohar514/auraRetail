@@ -310,6 +310,7 @@ import QuantitySelector from "./QuantitySelector";
 import ProductDetails from "./ProductDetails";
 import AlertPopup from "../AlertPopup";
 import { ProductsData } from "../homePage/ProductsData";
+ 
 
 const ImageAndDescription = () => {
   const { id } = useParams();
@@ -352,7 +353,7 @@ const ImageAndDescription = () => {
     <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 font-tenorSans">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-sm:place-items-center">
         {/* Image Slider */}
-        <ProductImageSlider images={product.images} />
+        <ProductImageSlider images={product.images} productName={product.name} />
 
         {/* Product Details */}
         <div className="flex flex-col space-y-4 md:space-y-6">
