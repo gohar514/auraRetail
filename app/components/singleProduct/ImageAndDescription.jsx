@@ -366,14 +366,14 @@ const ImageAndDescription = () => {
 
           {/* Price Display */}
           <div className="flex items-center gap-3">
-            <div className="text-base text-gray-800">Rs. {discountedPrice}</div>
+            <div className="text-base text-gray-800"> <span>Rs.</span> {discountedPrice}</div>
             {product.discount > 0 && (
               <>
                 <div className="text-base text-gray-500 line-through">
-                  Rs. {product.price.toFixed(2)}
+                <span>Rs.</span> {product.price.toFixed(2)}
                 </div>
                 <div className="text-red-500 text-sm rounded-md">
-                  Save {product.discount}%
+                 <span>Save</span>  {product.discount}%
                 </div>
               </>
             )}
