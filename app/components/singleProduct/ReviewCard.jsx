@@ -80,7 +80,7 @@ const ReviewCard = ({handleTouchStart,handleTouchEnd, reviews, setPopupReview, h
       <>
         <button
           onClick={() => handleNavigation("prev")}
-          className={`absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-transparent   hover:bg-gray-700 transition duration-300 ${
+          className={`absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-transparent    transition duration-300 ${
             currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={currentIndex === 0}

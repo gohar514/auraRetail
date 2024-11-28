@@ -110,8 +110,8 @@ const AllProducts = ({ relatedProducts }) => {
   objectFit="cover"
   className="group-hover:scale-105 transition-transform duration-300"
   quality={75}
-  loading={index === 0 ? "eager" : "lazy"} // Set to eager for the first image, lazy for others
-  priority={index === 0} // Only prioritize the first image
+   // Set to eager for the first image, lazy for others
+  priority // Only prioritize the first image
 />
 
                   </motion.div>
