@@ -27,10 +27,7 @@ const HeroSection = () => {
           Discover Luxury at <span className="inline-block animate-aura-fade">Aura</span>
         </h1>
 
-        {/* Subheading (optional) */}
-        {/* <p className="text-lg sm:text-xl lg:text-2xl mb-8 max-w-xl text-gray-400">
-          Elevate your style with our curated selection of high-quality products. Shop now for exclusivity and elegance.
-        </p> */}
+      
 
         {/* CTA Button */}
         <Link href="/products" passHref>

@@ -123,8 +123,8 @@
 
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
+import { useParams, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/app/store/cartSlice";
 import Link from "next/link";
@@ -133,6 +133,7 @@ import QuantitySelector from "./QuantitySelector";
 import ProductDetails from "./ProductDetails";
 import AlertPopup from "../AlertPopup";
 import { ProductsData } from "../homePage/ProductsData";
+import { AddToCart, SingleProductPageView } from "@/app/lib/metaPixel";
 
 // Memoize ProductDetails, QuantitySelector, and ProductImageSlider for reusability
 const MemoizedProductDetails = React.memo(ProductDetails);
@@ -142,6 +143,12 @@ const MemoizedProductImageSlider = React.memo(ProductImageSlider);
 const ImageAndDescription = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const pathname = usePathname();
+ 
+   useEffect(() => {
+     // Track PageView on route change
+    SingleProductPageView()
+   }, [pathname]);
 
   // State variables
   const [quantity, setQuantity] = useState(1);
@@ -169,7 +176,7 @@ const ImageAndDescription = () => {
     );
     setShowAlert(true);
     // Automatically hide the alert after 2 seconds
-    
+    AddToCart()
   }, [dispatch, product, quantity, discountedPrice]);
 
   return (
