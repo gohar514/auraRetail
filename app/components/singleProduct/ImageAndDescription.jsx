@@ -133,7 +133,7 @@ import QuantitySelector from "./QuantitySelector";
 import ProductDetails from "./ProductDetails";
 import AlertPopup from "../AlertPopup";
 import { ProductsData } from "../homePage/ProductsData";
-import { AddToCart, SingleProductPageView } from "@/app/lib/metaPixel";
+import { AddToCart, SingleProductPageView, Checkout } from "@/app/lib/metaPixel";
 
 // Memoize ProductDetails, QuantitySelector, and ProductImageSlider for reusability
 const MemoizedProductDetails = React.memo(ProductDetails);
@@ -166,7 +166,7 @@ const ImageAndDescription = () => {
   }, [product.price, product.discount]);
 
   // Memoize the add to cart handler to prevent unnecessary re-renders
-  const handleAddToCart = useCallback(() => {
+  const handleAddToCart = useCallback((buttonClick) => {
     dispatch(
       addToCart({
         ...product,
@@ -174,9 +174,8 @@ const ImageAndDescription = () => {
         price: discountedPrice,
       })
     );
-    setShowAlert(true);
-    // Automatically hide the alert after 2 seconds
-    AddToCart()
+    buttonClick === "buy" ? (setShowAlert(false), Checkout()) : (setShowAlert(true), AddToCart());
+
   }, [dispatch, product, quantity, discountedPrice]);
 
   return (
@@ -224,6 +223,7 @@ const ImageAndDescription = () => {
             </button>
             <Link href="/checkout">
               <button
+              onClick={()=>handleAddToCart("buy")}
                 className="bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition-all w-full border border-black font-playfair"
               >
                 Buy it now

@@ -1,14 +1,21 @@
 "use client"
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback,  useEffect } from "react";
 import { ProductsData } from "./ProductsData"; // Data
 import ProductItem from "./ProductItem"; // ProductItem Component
 import Link from "next/link";
+import { HomePageView } from "@/app/lib/metaPixel";
+import {  usePathname } from "next/navigation";
 
 // BestSellers Component
 const BestSellers = ({ relatedProducts }) => {
   const productsToShow = useMemo(() => (
     relatedProducts?.length > 0 ? relatedProducts : ProductsData.slice(0, 4)
   ), [relatedProducts]);
+  const pathname = usePathname();
+  useEffect(() => {
+    // Track PageView on route change
+   HomePageView()
+  }, [pathname]);
 
   const [touchStart, setTouchStart] = useState(0);
   const [currentImages, setCurrentImages] = useState(

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { clearCart } from "@/app/store/cartSlice";
 import Inputs from "./Inputs";
 import OrderSummary from "./OrderSummary";
+import { Purchase } from "@/app/lib/metaPixel";
 
 // Memoize components for minimal re-renders
 const MemoizedInputs = React.memo(Inputs);
@@ -97,6 +98,7 @@ const Checkout = () => {
       if (response.ok) {
         // Redirect to thank you page and clear the cart
         dispatch(clearCart());
+      Purchase()
         router.push("/thank-you");
       } else {
         const data = await response.json();

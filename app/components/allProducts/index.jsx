@@ -2,11 +2,13 @@
 
 "use client";
 
-import React, { useState, useMemo, useCallback, useRef } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect  } from "react";
 import { ProductsData } from "../homePage/ProductsData";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { AllProductsPageView } from "@/app/lib/metaPixel";
+import {  usePathname } from "next/navigation";
 
 const AllProducts = ({ relatedProducts }) => {
   // Memoize the products data to avoid unnecessary recalculation
@@ -15,6 +17,11 @@ const AllProducts = ({ relatedProducts }) => {
   const [sortOption, setSortOption] = useState("");
   const [currentImages, setCurrentImages] = useState(Array(productsToShow.length).fill(0));
   const [directions, setDirections] = useState(Array(productsToShow.length).fill(0));
+  const pathname = usePathname();
+  useEffect(() => {
+    // Track PageView on route change
+   AllProductsPageView()
+  }, [pathname]);
 
   // Ref to track touch start position
   const touchStartRef = useRef(null);

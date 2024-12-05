@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { RxDotFilled } from "react-icons/rx";
 import Image from "next/image";
 import Spinner from "../Spinner";
+import { Checkout } from "@/app/lib/metaPixel";
 
 
 const CartComponent = () => {
@@ -46,6 +47,14 @@ const CartComponent = () => {
     },
     [dispatch]
   );
+
+  const handleClick = 
+    () => {
+      Checkout()
+      console.log("go")
+    };
+    
+  
 
   // Handle empty cart
   if (!isMounted) {
@@ -144,7 +153,8 @@ const CartComponent = () => {
 
           <div className="flex flex-col gap-4 mt-4">
             <Link href="/checkout">
-              <button
+              <button 
+              onClick={handleClick}
                 className="bg-black text-white py-2 px-4 rounded-md font-semibold hover:bg-gray-600 transition-all w-full font-playfair"
                 aria-label="Proceed to Checkout"
               >
