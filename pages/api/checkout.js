@@ -7,12 +7,12 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const {
       email,
-      firstName,
-      secondName,
+      FullName,
+      
       country,
       province,
       city,
-      area,
+      
       address,
       apartment,
       mobile,
@@ -29,12 +29,12 @@ export default async function handler(req, res) {
       const order = await prisma.order.create({
         data: {
           email,
-          firstName,
-          secondName,
+          FullName,
+      
           country,
           province,
           city,
-          area,
+          
           address,
           apartment,
           mobile,

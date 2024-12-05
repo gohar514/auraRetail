@@ -25,12 +25,12 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    secondName: "",
+    FullName: "",
+    
     country: "Pakistan",
     province: "",
     city: "",
-    area: "",
+    
     address: "",
     apartment: "",
     mobile: "",

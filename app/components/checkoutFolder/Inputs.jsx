@@ -37,9 +37,8 @@ const SelectField = React.memo(({ id, name, value, onChange, options, placeholde
 ));
 
 const Inputs = React.memo(({ formData, handleChange }) => {
-  // Province and City options for selects
+  // Province options for select
   const provinces = ["Punjab", "Sindh", "KPK", "Balochistan", "Gilgit-Baltistan"];
-  const cities = ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar", "Quetta"];
 
   // Using useCallback to memoize handleChange function to avoid unnecessary re-renders
   const optimizedHandleChange = useCallback((e) => {
@@ -76,22 +75,15 @@ const Inputs = React.memo(({ formData, handleChange }) => {
 
         <div className="space-y-4">
           <InputField
-            id="firstName"
+            id="FullName"
             type="text"
-            name="firstName"
-            value={formData.firstName}
+            name="FullName"
+            value={formData.FullName}
             onChange={optimizedHandleChange}
-            placeholder="First Name"
+            placeholder="Full Name"
             required
           />
-          <InputField
-            id="secondName"
-            type="text"
-            name="secondName"
-            value={formData.secondName}
-            onChange={optimizedHandleChange}
-            placeholder="Second Name"
-          />
+         
           <SelectField
             id="province"
             name="province"
@@ -101,24 +93,16 @@ const Inputs = React.memo(({ formData, handleChange }) => {
             placeholder="Select Province"
             required
           />
-          <SelectField
+          <InputField
             id="city"
+            type="text"
             name="city"
             value={formData.city}
             onChange={optimizedHandleChange}
-            options={cities}
-            placeholder="Select City"
+            placeholder="City"
             required
           />
-          <InputField
-            id="area"
-            type="text"
-            name="area"
-            value={formData.area}
-            onChange={optimizedHandleChange}
-            placeholder="Area"
-            required
-          />
+          
           <InputField
             id="address"
             type="text"
@@ -171,4 +155,3 @@ const Inputs = React.memo(({ formData, handleChange }) => {
 });
 
 export default Inputs;
-

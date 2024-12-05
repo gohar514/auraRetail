@@ -10,12 +10,12 @@ datasource db {
 model Order {
   id            Int        @id @default(autoincrement())
   email         String
-  firstName     String
-  secondName    String
+  FullName     String
+
   country       String
   province      String
   city          String
-  area          String
+  
   address       String
   apartment     String?
   mobile        String
