@@ -34,7 +34,7 @@ const ReviewCard = ({
                 <div className="grid grid-cols-1 gap-6 mb-6">
                   {/* Avatar */}
                   <div className="flex justify-center">
-                    <div className="w-14 h-14 rounded-full bg-gray-800 text-cream flex justify-center items-center text-xl font-semibold">
+                    <div className="w-14 h-14 rounded-full bg-darkGreen text-cream flex justify-center items-center text-xl font-semibold">
                       {review.name.charAt(0).toUpperCase()}
                     </div>
                   </div>
@@ -56,7 +56,7 @@ const ReviewCard = ({
                     <FaStar
                       key={idx}
                       className={`${
-                        review.rating > idx ? "text-gray-800 transform scale-125" : "text-gray-300"
+                        review.rating > idx ? "text-darkGreen transform scale-125" : "text-gray-300"
                       } transition-all duration-300`}
                       size={24}
                     />
@@ -120,7 +120,7 @@ const ReviewCard = ({
             {/* Popup Review Content */}
             <div className="grid grid-cols-1 gap-6 mb-6">
               <div className="flex justify-center">
-                <div className="w-14 h-14 rounded-full bg-gray-800 text-cream flex justify-center items-center text-xl font-semibold">
+                <div className="w-14 h-14 rounded-full bg-darkGreen text-cream flex justify-center items-center text-xl font-semibold">
                   {popupReview.name.charAt(0).toUpperCase()}
                 </div>
               </div>
@@ -138,7 +138,7 @@ const ReviewCard = ({
                     key={idx}
                     className={`${
                       popupReview.rating > idx
-                        ? "text-gray-800 transform scale-125"
+                        ? "text-darkGreen transform scale-125"
                         : "text-gray-300"
                     } transition-all duration-300`}
                     size={24}
