@@ -12,7 +12,7 @@ const SuccessPopUp = ({ message, onClose }) => {
         onClick={onClose} // Close on click outside the popup
       ></div>
 
-      <div className="relative  rounded-lg shadow-lg w-11/12 sm:w-96 max-w-lg p-6 z-10">
+      <div className="relative  rounded-lg shadow-lg w-11/12 sm:w-96 max-w-lg p-6 z-10 bg-cream">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition duration-300"

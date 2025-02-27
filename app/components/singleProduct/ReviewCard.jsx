@@ -51,12 +51,12 @@ const ReviewCard = ({
                 </div>
 
                 {/* Star Rating */}
-                <div className="flex justify-center mb-4 space-x-2">
+                <div className="flex justify-center mb-4 space-x-1">
                   {[...Array(5)].map((_, idx) => (
                     <FaStar
                       key={idx}
                       className={`${
-                        review.rating > idx ? "text-darkGreen transform scale-125" : "text-gray-300"
+                        review.rating > idx ? "text-darkGreen " : "text-gray-300 "
                       } transition-all duration-300`}
                       size={24}
                     />
@@ -139,7 +139,7 @@ const ReviewCard = ({
                     className={`${
                       popupReview.rating > idx
                         ? "text-darkGreen transform scale-125"
-                        : "text-gray-300"
+                        : "text-gray-300 transform scale-125"
                     } transition-all duration-300`}
                     size={24}
                   />
