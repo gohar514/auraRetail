@@ -144,12 +144,12 @@ function SubmitReview({ handleSubmit, setFormData, handleRating, formData, error
       <motion.div
         key={index}
         whileHover={{ scale: 1.1 }}
-        className={`cursor-pointer ${formData.rating > index ? 'text-green-950' : 'text-gray-500'}`}
+        className={`cursor-pointer ${formData.rating > index ? 'text-yellow-400' : 'text-gray-500'}`}
         onClick={() => handleRating(index + 1)}
         aria-label={`Rate ${index + 1} stars`}
       >
         <FaStar
-          className={`text-3xl ${formData.rating > index ? 'text-darkGreen' : 'text-transparent'}`}
+          className={`text-3xl ${formData.rating > index ? 'text-yellow-400' : 'text-transparent'}`}
           style={{
             stroke: 'black',
             strokeWidth: 2,

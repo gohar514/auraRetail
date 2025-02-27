@@ -62,7 +62,7 @@ const NavBar = () => {
           <Link href={"/cart"}>
             <IoCartOutline className='h-6 w-6 md:h-8 md:w-8' />
             {isMounted && totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 bg-cream    bg-opacity-70  text-darkGreen text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-cream    bg-opacity-90  text-darkGreen text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {totalQuantity}
               </span>
             )}
