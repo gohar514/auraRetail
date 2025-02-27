@@ -10,7 +10,7 @@ const InputField = React.memo(({ id, type, name, value, onChange, placeholder, r
     name={name}
     value={value || ''}
     onChange={onChange}
-    className="w-full p-3 border border-gray-300 rounded"
+    className="w-full p-3 border border-gray-300 rounded bg-lightCream"
     placeholder={placeholder}
     required={required}
     pattern={pattern}
@@ -24,7 +24,7 @@ const SelectField = React.memo(({ id, name, value, onChange, options, placeholde
     name={name}
     value={value || ''}
     onChange={onChange}
-    className="w-full p-3 border border-gray-300 rounded bg-white"
+    className="w-full p-3 border border-gray-300 rounded bg-lightCream"
     required={required}
   >
     <option value="">{placeholder}</option>
@@ -56,6 +56,7 @@ const Inputs = React.memo(({ formData, handleChange }) => {
           <MdEmail className="text-xl" />
         </div>
         <InputField
+        
           id="email"
           type="email"
           name="email"

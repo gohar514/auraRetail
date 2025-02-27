@@ -105,7 +105,7 @@ const ReviewSection = ({ productId }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto  font-tenorSans">
+    <div className="max-w-2xl mx-auto  font-tenorSans ">
       
 
      <SubmitReview  handleSubmit={handleSubmit}  setFormData={setFormData}  handleRating={handleRating}  formData={formData} error={error} />

@@ -116,7 +116,7 @@ const Checkout = () => {
   }, []);
 
   return (
-    <div className="py-4 px-4 lg:px-16 font-tenorSans">
+    <div className="py-4 px-4 lg:px-16 font-tenorSans bg-cream">
       <div className="max-w-4xl mx-auto">
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
           {/* Left Column: Contact and Delivery */}

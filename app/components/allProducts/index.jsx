@@ -71,10 +71,10 @@ const AllProducts = ({ relatedProducts }) => {
   }, [productsToShow]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 font-tenorSans">
+    <div className="max-w-7xl mx-auto px-4 py-8 font-tenorSans bg-cream">
       <div className="flex justify-end items-center mb-8">
         <select
-          className="text-sm py-2 px-2 bg-white rounded-md shadow-sm"
+          className="text-sm py-2 px-2 bg-cream rounded-md shadow-sm"
           value={sortOption}
           onChange={handleSortChange}
         >
@@ -93,7 +93,7 @@ const AllProducts = ({ relatedProducts }) => {
 
           return (
             <Link href={`/product/${product.id}`} key={product.id}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+              <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div
                   className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72"
                   onTouchStart={handleTouchStart}

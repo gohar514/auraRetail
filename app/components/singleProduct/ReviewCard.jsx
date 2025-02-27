@@ -25,16 +25,16 @@ const ReviewCard = ({
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {reviews.map((review, index) => (
+            {reviews?.map((review, index) => (
               <div
                 key={index}
-                className="w-full flex-shrink-0 py-6 px-4 sm:px-6 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform transform duration-300"
+                className="w-full flex-shrink-0 py-6 px-4 sm:px-6 bg-[#FFFCF7] border border-gray-300 rounded-lg shadow-lg transition-transform transform duration-300"
               >
                 {/* Review Header */}
                 <div className="grid grid-cols-1 gap-6 mb-6">
                   {/* Avatar */}
                   <div className="flex justify-center">
-                    <div className="w-14 h-14 rounded-full bg-gray-800 text-white flex justify-center items-center text-xl font-semibold">
+                    <div className="w-14 h-14 rounded-full bg-gray-800 text-cream flex justify-center items-center text-xl font-semibold">
                       {review.name.charAt(0).toUpperCase()}
                     </div>
                   </div>
@@ -108,7 +108,7 @@ const ReviewCard = ({
       {/* Popup Modal */}
       {popupReview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-11/12 sm:w-3/4 lg:w-1/2 p-6 rounded-lg shadow-lg relative">
+          <div className="bg-cream w-11/12 sm:w-3/4 lg:w-1/2 p-6 rounded-lg shadow-lg relative">
             {/* Close Button */}
             <button
               onClick={() => setPopupReview(null)}
@@ -120,7 +120,7 @@ const ReviewCard = ({
             {/* Popup Review Content */}
             <div className="grid grid-cols-1 gap-6 mb-6">
               <div className="flex justify-center">
-                <div className="w-14 h-14 rounded-full bg-gray-800 text-white flex justify-center items-center text-xl font-semibold">
+                <div className="w-14 h-14 rounded-full bg-gray-800 text-cream flex justify-center items-center text-xl font-semibold">
                   {popupReview.name.charAt(0).toUpperCase()}
                 </div>
               </div>

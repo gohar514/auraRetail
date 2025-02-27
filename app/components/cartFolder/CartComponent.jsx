@@ -68,7 +68,7 @@ const CartComponent = () => {
   // Handle empty cart
   if (cartItems.length === 0) {
     return (
-      <div className="text-center h-screen flex flex-col items-center justify-center gap-1 p-8">
+      <div className="text-center h-screen flex flex-col items-center justify-center gap-1 p-8 bg-cream">
         <h1 className="text-2xl font-playfair font-bold">Your cart is empty</h1>
         <Link href="/" className=" text-gray-500 underline">
           Continue Shopping
@@ -78,15 +78,15 @@ const CartComponent = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 font-tenorSans">
+    <div className="container mx-auto px-4 py-8 font-tenorSans bg-cream">
       <div className="flex flex-col lg:flex-row gap-2 justify-between">
         {/* Products Section */}
-        <div className="w-full lg:w-3/4 bg-white shadow-lg rounded-lg p-6 mb-6 lg:mb-0">
+        <div className="w-full lg:w-3/4  shadow-lg rounded-lg p-6 mb-6 lg:mb-0">
           <h1 className="text-xl font-playfair font-semibold mb-6">Shopping Cart</h1>
           {cartItems.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center bg-gray-50 rounded-lg mb-4 shadow-sm gap-8"
+              className="flex justify-between items-center bg-[#FFFCF7] rounded-lg mb-4 shadow-sm gap-8"
             >
               {/* Product Image */}
               <div className="w-1/4 flex justify-start items-start mb-4 md:mb-0">
@@ -131,7 +131,7 @@ const CartComponent = () => {
         </div>
 
         {/* Order Summary Section */}
-        <div className="w-full lg:w-1/4 lg:sticky lg:top-20 bg-white shadow-lg rounded-lg p-6">
+        <div className="w-full lg:w-1/4 lg:sticky lg:top-20 bg-[#FFFCF7] shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-playfair font-semibold mb-4">Order Summary</h2>
           <div className="flex justify-between mb-2">
             <div className="flex items-center">
@@ -155,7 +155,7 @@ const CartComponent = () => {
             <Link href="/checkout">
               <button 
               onClick={handleClick}
-                className="bg-black text-white py-2 px-4 rounded-md font-semibold hover:bg-gray-600 transition-all w-full font-playfair"
+                className="bg-darkGreen text-cream py-2 px-4 rounded-md font-semibold hover:bg-green-950 transition-all w-full font-playfair"
                 aria-label="Proceed to Checkout"
               >
                 Checkout

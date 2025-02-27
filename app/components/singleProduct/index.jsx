@@ -11,7 +11,7 @@ const SingleProduct = ({ productId }) => {
   const relatedProducts = ProductsData.slice(1, 4); // Replace this with actual related products logic
 
   return (
-    <div>
+    <div className='bg-cream'>
       <ImageAndDescription />
       
       <div className="container mx-auto px-4 lg:px-20 py-4 lg:py-12 grid grid-cols-1 md:grid-cols-2 gap-4  ">

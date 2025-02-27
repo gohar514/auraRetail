@@ -7,7 +7,7 @@ import { FaFacebookSquare, FaInstagram, FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-10 font-tenorSans">
+    <footer className="bg-[#061f15] text-cream py-10 font-tenorSans">
       <div className="container mx-auto px-6 md:px-12">
         {/* Footer Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-3  gap-8 mb-8 text-center ">
@@ -16,17 +16,17 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4 font-playfair">Company</h3>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <Link href="/about#about-us" className="hover:text-white">
+                <Link href="/about#about-us" className="hover:text-cream">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-white">
+                <Link href="/products" className="hover:text-cream">
                   Collections
                 </Link>
               </li>
               <li>
-                <Link href="/about#contact-us" className="hover:text-white">
+                <Link href="/about#contact-us" className="hover:text-cream">
                   Contact Us
                 </Link>
               </li>
@@ -38,17 +38,17 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4 font-playfair">Customer Service</h3>
             <ul className="space-y-2 text-sm text-gray-300">
             <li>
-                <Link href="/about#faqs" className="hover:text-white">
+                <Link href="/about#faqs" className="hover:text-cream">
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="/about#privacy-policy" className="hover:text-white">
+                <Link href="/about#privacy-policy" className="hover:text-cream">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/about#shipping-returns" className="hover:text-white">
+                <Link href="/about#shipping-returns" className="hover:text-cream">
                   Shipping & Returns
                 </Link>
               </li>
@@ -65,7 +65,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-cream"
               >
                 <FaFacebookSquare size={24} />
               </a>
@@ -74,7 +74,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-cream"
               >
                 <FaInstagram size={24} />
               </a>
@@ -83,7 +83,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-cream"
               >
                 <FaTiktok size={24} />
               </a>

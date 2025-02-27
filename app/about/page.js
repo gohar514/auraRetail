@@ -6,7 +6,7 @@ const AboutPage = () => {
  
 
   return (
-    <div className="font-sans flex flex-col gap-4 px-4 container mx-auto">
+    <div className="font-sans flex flex-col gap-4 px-4 container mx-auto bg-cream">
       {/* About Us Section */}
       <section id="about-us" className="min-h-screen p-2">
       <h1 className="text-3xl font-bold text-center mb-4 font-playfair">About Us</h1>

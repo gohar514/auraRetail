@@ -25,14 +25,14 @@ const NavBar = () => {
   };
 
   return (
-    <div className="relative font-playfair">
+    <div className="relative font-playfair bg-darkGreen text-cream">
       {/* Main Navbar */}
       <div className='flex justify-between items-center mx-4'>
         <div className='flex justify-center items-center'>
           {/* Toggle between hamburger and close icon */}
           {menuOpen ? (
             <RxCross1
-              className='h-5 w-5 md:hidden cursor-pointer text-white'
+              className='h-5 w-5 md:hidden cursor-pointer text-cream'
               onClick={toggleMenu}
             />
           ) : (
@@ -62,7 +62,7 @@ const NavBar = () => {
           <Link href={"/cart"}>
             <IoCartOutline className='h-6 w-6 md:h-8 md:w-8' />
             {isMounted && totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black bg-opacity-70 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-cream    bg-opacity-70  text-darkGreen text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {totalQuantity}
               </span>
             )}
@@ -78,7 +78,7 @@ const NavBar = () => {
 >
   {/* Side menu (70% of the screen) */}
   <div
-    className={`w-[70%] h-full z-30 md:hidden bg-white p-6 transform transition-transform duration-600 ease-in-out ${
+    className={`w-[70%] h-full z-30 md:hidden bg-cream text-darkGreen p-6 transform transition-transform duration-600 ease-in-out ${
       menuOpen ? 'translate-x-0' : '-translate-x-full'
     }`}
   >
@@ -87,7 +87,7 @@ const NavBar = () => {
         menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-72 opacity-0'
       }`}
     >
-      <li className="border-b border-b-gray-300">
+      <li className="border-b border-b-darkGreen">
         <div className="flex justify-between items-center mb-2">
           <div className="m-2 mx-3 p-0 flex flex-col items-center">
             <p className="text-xl font-bold md:text-2xl lg:text-3xl">Aura</p>
@@ -95,7 +95,7 @@ const NavBar = () => {
           </div>
           <div>
             <RxCross1
-              className="h-5 w-5 md:hidden cursor-pointer"
+              className="h-5 w-5 md:hidden cursor-pointer text-darkGreen"
               onClick={toggleMenu}
             />
           </div>

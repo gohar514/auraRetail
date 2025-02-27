@@ -62,7 +62,7 @@ const BestSellers = ({ relatedProducts }) => {
   }, [productsToShow]);
 
   return (
-    <section className="py-8 bg-gray-50 font-tenorSans">
+    <section className="py-8 bg-cream font-tenorSans">
       <div className="container mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6 text-gray-900 font-playfair">
           {relatedProducts?.length > 0 ? "Related Products" : "Best Sellers"}

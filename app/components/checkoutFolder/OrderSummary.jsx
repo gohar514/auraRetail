@@ -14,7 +14,7 @@ const OrderSummary = ({formData, handleChange, toggleOrderSummary, showOrderSumm
             {/* Shipping Method */}
             <div className="space-y-2">
               <div className="font-semibold text-xl font-playfair">Shipping Method</div>
-              <div className="flex justify-between items-center border h-12 border-gray-300 bg-[#f6f6f6] rounded">
+              <div className="flex justify-between items-center border h-12 border-gray-300 bg-[#F8F3EE] rounded">
                 <div className="pl-2">Free Shipping</div>
                 <div className="font-semibold pr-2">FREE</div>
               </div>
@@ -23,7 +23,7 @@ const OrderSummary = ({formData, handleChange, toggleOrderSummary, showOrderSumm
             {/* Payments */}
             <div className="space-y-2">
               <div className="font-semibold text-xl font-playfair">Payments</div>
-              <div className="flex justify-start gap-1 items-center h-12 border border-gray-300 bg-[#f6f6f6] rounded">
+              <div className="flex justify-start gap-1 items-center h-12 border border-gray-300 bg-[#F8F3EE] rounded">
                 <div className="pl-2 flex items-center">
                   <input
                     type="radio"
@@ -66,7 +66,7 @@ const OrderSummary = ({formData, handleChange, toggleOrderSummary, showOrderSumm
                             height={200} // Example height in pixels
                             className="w-10 h-10  object-cover rounded"
                           />
-                          <span className="absolute -top-2 -right-2 bg-black bg-opacity-50 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                          <span className="absolute -top-2 -right-2 bg-darkGreen bg-opacity-70 text-cream text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">
                             {item.quantity}
                           </span>
                         </div>
@@ -107,9 +107,9 @@ const OrderSummary = ({formData, handleChange, toggleOrderSummary, showOrderSumm
               </div>
               <button
               type="submit"
-              className="p-3 bg-black flex justify-center items-center text-white rounded hover:bg-gray-600 mt-4 w-full font-playfair"
+              className="p-3 bg-darkGreen flex justify-center items-center text-cream rounded hover:bg-green-950 mt-4 w-full font-playfair"
             >
-            {loading?<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>:"Complete Order"
+            {loading?<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>:"Complete Order"
 }  
             </button>
           </div>

@@ -14,6 +14,9 @@ module.exports = {
       colors: {
         background: "var(--background)",
         oliveGreen: '#4E5A37',
+        darkGreen: "#09271c",
+        cream: "#FCF7F1",
+        lightCream: "#FFFCF7",
         foreground: "var(--foreground)",
       },
       keyframes: {
