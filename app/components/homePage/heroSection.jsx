@@ -24,7 +24,7 @@ const HeroSection = () => {
       <div className="relative flex flex-col items-center justify-end gap-6 pt-12 pb-8 h-full px-6 text-center text-cream">
         {/* Headline */}
         <h1 className="text-4xl sm:text-4xl lg:text-5xl font-extrabold mb-4 font-playfair">
-          Discover Luxury at <span className="inline-block animate-aura-fade">Aura</span>
+          Discover Luxury at <span className="inline-block animate-aura-fade text-oliveGreen">Aura</span>
         </h1>
 
       
