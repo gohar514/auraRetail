@@ -25,7 +25,7 @@ const ReviewCard = ({
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {reviews?.map((review, index) => (
+           {Array.isArray(reviews) && reviews.map((review, index) => (
               <div
                 key={index}
                 className="w-full flex-shrink-0 py-6 px-4 sm:px-6 bg-[#FFFCF7] border border-gray-300 rounded-lg shadow-lg transition-transform transform duration-300"

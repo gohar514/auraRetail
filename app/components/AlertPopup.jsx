@@ -5,9 +5,10 @@ import { IoCloseOutline } from "react-icons/io5";
 
 const AlertPopup = ({ message, onClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-cream">
+    <div className="fixed inset-0 flex items-center justify-center z-50 h-screen bg-black/30 backdrop-blur-sm transition-opacity">
+
       <div
-        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="absolute inset-0"
         onClick={onClose} // Close on click outside the popup
       ></div>
 
