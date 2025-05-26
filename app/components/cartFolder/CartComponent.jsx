@@ -13,6 +13,7 @@ import { Checkout } from "@/app/lib/metaPixel";
 
 const CartComponent = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const [loading, setLoading]= useState(false)
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -152,15 +153,23 @@ const CartComponent = () => {
           </div>
 
           <div className="flex flex-col gap-4 mt-4">
-            <Link href="/checkout">
-              <button 
-              onClick={handleClick}
-                className="bg-darkGreen text-cream py-2 px-4 rounded-md font-semibold hover:bg-green-950 transition-all w-full font-playfair"
-                aria-label="Proceed to Checkout"
-              >
-                Checkout
-              </button>
-            </Link>
+          <button 
+  onClick={() => {
+    setLoading(true);
+    Checkout(); // Your existing tracking call
+    router.push("/checkout");
+  }}
+  disabled={loading}
+  className="bg-darkGreen text-cream py-2 px-4 rounded-md font-semibold hover:bg-green-950 transition-all w-full font-playfair flex items-center justify-center"
+  aria-label="Proceed to Checkout"
+>
+  {loading ? (
+    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+  ) : (
+    "Complete Order"
+  )}
+</button>
+
             <button
               onClick={handleGoBack}
               className="underline text-sm hover:text-gray-700"

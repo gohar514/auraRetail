@@ -72,11 +72,11 @@ const AllProducts = ({ relatedProducts }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 font-tenorSans bg-cream">
-      <div className="flex justify-end items-center mb-8">
+      <div className="flex justify-end items-center  mb-8">
         <select
-          className="text-sm py-2 px-2 bg-cream rounded-md shadow-sm"
+          className="text-sm py-2 px-2  bg-cream rounded-md shadow-sm outline-darkGreen border border-darkGreen"
           value={sortOption}
-          onChange={handleSortChange}
+          onChange={handleSortChange} 
         >
           <option value="">Sort</option>
           <option value="As Featured">As Featured</option>

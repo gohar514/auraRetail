@@ -11,6 +11,7 @@ import ProductDetails from "./ProductDetails";
 import AlertPopup from "../AlertPopup";
 import { ProductsData } from "../homePage/ProductsData";
 import { AddToCart, SingleProductPageView, Checkout } from "@/app/lib/metaPixel";
+import { useRouter } from "next/navigation";
 
 // Memoize ProductDetails, QuantitySelector, and ProductImageSlider for reusability
 const MemoizedProductDetails = React.memo(ProductDetails);
@@ -21,6 +22,7 @@ const ImageAndDescription = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const pathname = usePathname();
+ const router = useRouter();
  
    useEffect(() => {
      // Track PageView on route change
@@ -30,6 +32,8 @@ const ImageAndDescription = () => {
   // State variables
   const [quantity, setQuantity] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
+  const [loadingBuyNow, setLoadingBuyNow] = useState(false);
+
 
   // Memoize product lookup to avoid recomputation on every render
   const product = useMemo(() => ProductsData.find((p) => p.id === parseInt(id)) || null, [id]);
@@ -98,14 +102,21 @@ const ImageAndDescription = () => {
             >
               Add to Cart
             </button>
-            <Link href="/checkout">
-              <button
-              onClick={()=>handleAddToCart("buy")}
-                className="bg-darkGreen text-cream py-3 px-6 rounded-md hover:bg-green-950 transition-all w-full border border-darkGreen font-playfair"
-              >
-                Buy it now
-              </button>
-            </Link>
+            <button
+  onClick={() => {
+    setLoadingBuyNow(true);
+    handleAddToCart("buy");
+    router.push("/checkout");
+  }}
+  disabled={loadingBuyNow}
+  className="bg-darkGreen text-cream py-3 px-6 rounded-md hover:bg-green-950 transition-all w-full border border-darkGreen font-playfair flex items-center justify-center"
+>
+  {loadingBuyNow ? (
+    <div className="animate-spin rounded-full h-5 w-5 border-2 border-cream border-t-transparent" />
+  ) : (
+    "Buy it now"
+  )}
+</button>
           </div>
 
           {/* Product Description */}
