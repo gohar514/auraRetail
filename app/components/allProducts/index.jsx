@@ -36,7 +36,7 @@ const AllProducts = ({ relatedProducts }) => {
         // Slide to second image after short delay
         setTimeout(() => {
           swiper.slideTo(1);
-        }, 300);
+        }, 1000);
   
         // Slide back to first image
         setTimeout(() => {
@@ -84,7 +84,7 @@ const AllProducts = ({ relatedProducts }) => {
             <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
               <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72">
                 <Swiper
-                  spaceBetween={0}
+                  spaceBetween={5}
                   slidesPerView={1}
                   loop={true}
                   autoplay={{
@@ -103,7 +103,9 @@ const AllProducts = ({ relatedProducts }) => {
                           aria-label={`Image of ${product.name}`}
                           src={image}
                           alt={product.name}
-                          layout="fill"
+                          layout="responsive"
+                          width={450}
+                          height={562}
                           objectFit="cover"
                           className="group-hover:scale-105 transition-transform duration-300"
                           quality={75}
