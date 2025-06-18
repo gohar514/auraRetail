@@ -1,101 +1,119 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 const ProductImageSlider = React.memo(({ images, productName }) => {
   const fallbackRef = useRef(null);
+  const swiperRef = useRef(null);
   const [currentImage, setCurrentImage] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [loadedIndexes, setLoadedIndexes] = useState(new Set());
 
-  // Handle swipe gestures with memoized function to avoid unnecessary re-renders
-  const handleSwipe = useCallback((touchEnd) => {
-    const swipeDistance = touchStart - touchEnd;
-    if (Math.abs(swipeDistance) > 50) {
-      changeImage(swipeDistance > 0 ? 1 : -1);
+  const handleImageLoad = (i) => {
+    setLoadedIndexes((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(i);
+      return newSet;
+    });
+
+    if (i === 0 && fallbackRef.current) {
+      fallbackRef.current.style.opacity = "0";
+      setTimeout(() => {
+        if (fallbackRef.current) fallbackRef.current.style.display = "none";
+      }, 400);
     }
-  }, [touchStart]);
-
-  // Memoized image change function
-  const changeImage = useCallback((dir) => {
-    setDirection(dir);
-    setCurrentImage((prev) => (prev + dir + images.length) % images.length);
-  }, [images.length]);
-
-  // Memoize image key to avoid unnecessary re-renders in AnimatePresence
-  const imageKey = `${currentImage}-${direction}`;
+  };
 
   return (
-    <div
-      className="relative w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] lg:w-[500px] lg:h-[500px] bg-cream rounded-lg flex items-center justify-center overflow-hidden"
-      onTouchStart={(e) => setTouchStart(e.touches[0].clientX)} // Record touch start position
-      onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)} // Trigger swipe on touch end
-    >
-      <AnimatePresence custom={direction}>
-        <motion.div
-          key={imageKey} // Use a unique key to optimize lifecycle of each image
-          initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
-          animate={{ x: "0%", opacity: 1 }}
-          exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 flex items-center justify-center"
+    <div className="relative flex items-center justify-center gap-4 w-full">
+      {/* Left Button */}
+      <motion.button
+        onClick={() => swiperRef.current?.slidePrev()}
+        aria-label="Previous Image"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="hidden md:flex items-center justify-center w-10 h-10 text-white bg-black/40 hover:bg-black/70 rounded-full z-30 backdrop-blur-md transition"
+      >
+        <FaAngleLeft className="w-6 h-6" />
+      </motion.button>
+
+      {/* Slider Container */}
+      <div className="relative w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-cream rounded-2xl overflow-hidden shadow-xl">
+        {/* Fallback Image */}
+        <div
+          ref={fallbackRef}
+          className="absolute inset-0 z-10 flex items-center justify-center bg-cream transition-opacity duration-500 ease-in-out"
         >
-          {/* Fallback Image */}
-          <div
-            ref={fallbackRef}
-            className="absolute inset-0 z-10 flex items-center justify-center bg-cream"
-          >
-            <Image
-              src="/assets/static_image_aura_with_text.png"
-              alt={`${productName} fallback`}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-
-          {/* Current Image */}
           <Image
-            src={images[currentImage]}
-            alt={`${productName} - Image ${currentImage + 1}`}
+            src="/assets/static_image_aura_with_text.png"
+            alt={`${productName} fallback`}
             fill
-            className="rounded-lg z-20 object-cover"
-            quality={75} // Adjust quality to balance performance and visuals
-            loading="lazy" // Lazy loading images for performance
-            onLoadingComplete={() => {
-              // Hide fallback image once main image is loaded
-              if (fallbackRef.current) fallbackRef.current.style.display = "none";
-            }}
+            className="object-cover"
+            priority
           />
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
-      {/* Image Counter */}
-      <div className="absolute top-2 left-2 p-1 text-xs bg-transparent font-playfair  ">
-        {currentImage + 1} / {images.length}
+        {/* Swiper Slider */}
+        <Swiper
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
+          onSlideChange={(swiper) => {
+            setCurrentImage(swiper.realIndex);
+          }}
+          slidesPerView={1}
+          loop={images.length > 1}
+          speed={600}
+          className="absolute inset-0 w-full h-full z-20"
+        >
+          {images.map((img, i) => (
+            <SwiperSlide key={i}>
+              <motion.div
+                initial={{ opacity: 0.6, scale: 0.98 }}
+                animate={
+                  loadedIndexes.has(i)
+                    ? { opacity: 1, scale: 1 }
+                    : { opacity: 0.6, scale: 0.98 }
+                }
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="w-full h-full relative"
+              >
+                <Image
+                  src={img}
+                  alt={`${productName} - Image ${i + 1}`}
+                  fill
+                  className="object-cover rounded-xl"
+                  quality={80}
+                  loading="lazy"
+                  onLoad={() => handleImageLoad(i)}
+                />
+              </motion.div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* Image Counter */}
+        <div className="absolute top-2 left-2 px-2 py-1 text-xs bg-transparent text-black rounded font-playfair backdrop-blur-sm z-30">
+          {currentImage + 1} / {images.length}
+        </div>
       </div>
 
-      {/* Navigation Buttons */}
-      <button
-        onClick={() => changeImage(-1)}
-        aria-label="Previous Image"
-        className="hidden md:block absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black z-30"
-      >
-        <FaAngleLeft className="w-8 h-8" />
-      </button>
-      <button
-        onClick={() => changeImage(1)}
+      {/* Right Button */}
+      <motion.button
+        onClick={() => swiperRef.current?.slideNext()}
         aria-label="Next Image"
-        className="hidden md:block absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black z-30"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="hidden md:flex items-center justify-center w-10 h-10 text-white bg-black/40 hover:bg-black/70 rounded-full z-30 backdrop-blur-md transition"
       >
-        <FaAngleRight className="w-8 h-8" />
-      </button>
+        <FaAngleRight className="w-6 h-6" />
+      </motion.button>
     </div>
   );
 });
 
 export default ProductImageSlider;
-
