@@ -1,102 +1,101 @@
-"use client"
+"use client";
 
-import React, { useMemo, useEffect, useRef } from "react";
-import { ProductsData } from "./ProductsData";
-import ProductItem from "./ProductItem";
-import Link from "next/link";
-import { HomePageView } from "@/app/lib/metaPixel";
-import { usePathname } from "next/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import "swiper/css";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
-const BestSellers = ({ relatedProducts }) => {
-  const productsToShow = useMemo(() => (
-    relatedProducts?.length > 0 ? relatedProducts : ProductsData.slice(0, 4)
-  ), [relatedProducts]);
+const ProductImageSlider = React.memo(({ images, productName }) => {
+  const fallbackRef = useRef(null);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  const pathname = usePathname();
-  useEffect(() => {
-    HomePageView();
-  }, [pathname]);
+  // Handle swipe gestures with memoized function to avoid unnecessary re-renders
+  const handleSwipe = useCallback((touchEnd) => {
+    const swipeDistance = touchStart - touchEnd;
+    if (Math.abs(swipeDistance) > 50) {
+      changeImage(swipeDistance > 0 ? 1 : -1);
+    }
+  }, [touchStart]);
+
+  // Memoized image change function
+  const changeImage = useCallback((dir) => {
+    setDirection(dir);
+    setCurrentImage((prev) => (prev + dir + images.length) % images.length);
+  }, [images.length]);
+
+  // Memoize image key to avoid unnecessary re-renders in AnimatePresence
+  const imageKey = `${currentImage}-${direction}`;
 
   return (
-    <section className="py-8 bg-cream font-tenorSans">
-      <div className="container mx-auto px-6">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6 text-gray-900 font-playfair">
-          {relatedProducts?.length > 0 ? "Related Products" : "Best Sellers"}
-        </h2>
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {productsToShow.map((product) => (
-            <div key={product.id} className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-              <div className="relative w-full aspect-[3/4]">
-                {/* Fallback Image */}
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-cream">
-                  <Image
-                    src="/assets/static_image_aura_with_text.png"
-                    alt={`${product.name} fallback`}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-                <Swiper
-                  spaceBetween={5}
-                  slidesPerView={1}
-                  loop={product.images.length > 1}
-                  className="absolute inset-0 w-full h-full"
-                >
-                  {product.images.map((image, index) => (
-                    <SwiperSlide key={index}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={image}
-                          alt={product.name}
-                          fill
-                          className="object-cover transition-transform duration-300 ease-in-out"
-                          quality={60}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                          loading={index === 0 ? "eager" : "lazy"}
-                          priority={index === 0}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-                {product.discount > 0 && (
-                  <div className="absolute top-2 right-2 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold z-20">
-                    {product.discount}%
-                  </div>
-                )}
-              </div>
-              <div className="p-3 sm:p-4">
-                <h2 className="text-sm sm:text-base font-semibold mb-1 sm:mb-2 line-clamp-2">
-                  {product.name}
-                </h2>
-                <div className="flex items-center gap-2">
-                  <div className="text-sm font-medium text-red-600">
-                    Rs.{(product.price * (1 - product.discount / 100)).toFixed(2)}
-                  </div>
-                  {product.discount > 0 && (
-                    <div className="text-xs text-gray-500 line-through">
-                      Rs.{product.price.toFixed(2)}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center mt-12">
-          <Link href="/products">
-            <p className="inline-block py-3 px-6 rounded-lg text-lg font-semibold transition-colors duration-300 font-playfair">
-              View All
-            </p>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-};
+    <div
+      className="relative w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] lg:w-[500px] lg:h-[500px] bg-cream rounded-lg flex items-center justify-center overflow-hidden"
+      onTouchStart={(e) => setTouchStart(e.touches[0].clientX)} // Record touch start position
+      onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)} // Trigger swipe on touch end
+    >
+      <AnimatePresence custom={direction}>
+        <motion.div
+          key={imageKey} // Use a unique key to optimize lifecycle of each image
+          initial={{ x: direction === 1 ? "100%" : "-100%", opacity: 0 }}
+          animate={{ x: "0%", opacity: 1 }}
+          exit={{ x: direction === 1 ? "-100%" : "100%", opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          {/* Fallback Image */}
+          <div
+            ref={fallbackRef}
+            className="absolute inset-0 z-10 flex items-center justify-center bg-cream"
+          >
+            <Image
+              src="/assets/static_image_aura_with_text.png"
+              alt={`${productName} fallback`}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
 
-export default BestSellers;
+          {/* Current Image */}
+          <Image
+            src={images[currentImage]}
+            alt={`${productName} - Image ${currentImage + 1}`}
+            fill
+            className="rounded-lg z-20 object-cover"
+            quality={75} // Adjust quality to balance performance and visuals
+            loading="lazy" // Lazy loading images for performance
+            onLoadingComplete={() => {
+              // Hide fallback image once main image is loaded
+              if (fallbackRef.current) fallbackRef.current.style.display = "none";
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Image Counter */}
+      <div className="absolute top-2 left-2 p-1 text-xs bg-transparent font-playfair  ">
+        {currentImage + 1} / {images.length}
+      </div>
+
+      {/* Navigation Buttons */}
+      <button
+        onClick={() => changeImage(-1)}
+        aria-label="Previous Image"
+        className="hidden md:block absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black z-30"
+      >
+        <FaAngleLeft className="w-8 h-8" />
+      </button>
+      <button
+        onClick={() => changeImage(1)}
+        aria-label="Next Image"
+        className="hidden md:block absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-black z-30"
+      >
+        <FaAngleRight className="w-8 h-8" />
+      </button>
+    </div>
+  );
+});
+
+export default ProductImageSlider;
+
