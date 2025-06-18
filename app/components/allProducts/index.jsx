@@ -1,36 +1,33 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { ProductsData } from "../homePage/ProductsData";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { AllProductsPageView } from "@/app/lib/metaPixel";
 import { usePathname } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
 import "swiper/css";
 
+import { ProductsData } from "../homePage/ProductsData";
+import { AllProductsPageView } from "@/app/lib/metaPixel";
+
 const AllProducts = ({ relatedProducts }) => {
+  const pathname = usePathname();
+
+  // Trigger Meta Pixel page view
+  useEffect(() => {
+    AllProductsPageView();
+  }, [pathname]);
+
+  // Use related products if provided, otherwise fallback to default data
   const productsToShow = useMemo(
     () => (relatedProducts?.length > 0 ? relatedProducts : ProductsData),
     [relatedProducts]
   );
 
   const [sortOption, setSortOption] = useState("");
-  const [currentImages, setCurrentImages] = useState(
-    Array(productsToShow.length).fill(0)
-  );
-  const [directions, setDirections] = useState(
-    Array(productsToShow.length).fill(0)
-  );
-  const pathname = usePathname();
 
-  useEffect(() => {
-    AllProductsPageView();
-  }, [pathname]);
-
-  const touchStartRef = useRef(null);
-
+  // Sorting logic based on selected option
   const sortedProducts = useMemo(() => {
     const sortBy = {
       "Price, low to high": (a, b) =>
@@ -45,10 +42,13 @@ const AllProducts = ({ relatedProducts }) => {
     return [...productsToShow].sort(sortBy[sortOption] || sortBy.default);
   }, [sortOption, productsToShow]);
 
-  const handleSortChange = useCallback((e) => setSortOption(e.target.value), []);
+  const handleSortChange = useCallback((e) => {
+    setSortOption(e.target.value);
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 font-tenorSans bg-cream">
+      {/* Sort dropdown */}
       <div className="flex justify-end items-center mb-8">
         <select
           className="text-sm py-2 px-2 bg-cream rounded-md shadow-sm outline-darkGreen border border-darkGreen"
@@ -56,7 +56,6 @@ const AllProducts = ({ relatedProducts }) => {
           onChange={handleSortChange}
         >
           <option value="">Sort</option>
-          <option value="As Featured">As Featured</option>
           <option value="Price, low to high">Price, low to high</option>
           <option value="Price, high to low">Price, high to low</option>
           <option value="Date, old to new">Date, old to new</option>
@@ -64,71 +63,67 @@ const AllProducts = ({ relatedProducts }) => {
         </select>
       </div>
 
-      <div className="grid gap-2 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {sortedProducts.map((product, index) => (
-          <Link href={`/product/${product.id}`} key={product.id}>
-            <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72">
+      {/* Product Grid */}
+      <div className="grid gap-2 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {sortedProducts.map((product, index) => (
+    <Link href={`/product/${product.id}`} key={product.id}>
+     <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+
+        {/* Image Slider */}
+        <div className="relative w-full aspect-[1/1]">
   <Swiper
     spaceBetween={5}
     slidesPerView={1}
-     loop={true} // ✅ Add this line to enable looping
-    className="w-full h-full"
-    onSlideChange={(swiper) => {
-      setCurrentImages((prev) =>
-        prev.map((img, i) =>
-          i === index ? swiper.activeIndex : img
-        )
-      );
-    }}
+    loop={product.images.length > 1}
+    className="absolute inset-0 w-full h-full"
   >
     {product.images.map((image, imgIndex) => (
       <SwiperSlide key={imgIndex}>
         <div className="relative w-full h-full">
           <Image
-            aria-label={`Image of ${product.name}`}
             src={image}
             alt={product.name}
-            layout="fill"
-            objectFit="cover"
-            className="group-hover:scale-105 transition-transform duration-300"
-            quality={75}
-            priority={imgIndex === 0}
+            fill
+            className="object-cover rounded-lg transition-transform duration-300 ease-in-out"
+            quality={60}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            loading={imgIndex === 0 ? "eager" : "lazy"}
+            priority={index < 4 && imgIndex === 0}
           />
         </div>
       </SwiperSlide>
     ))}
   </Swiper>
 
-  {/* Make sure this is directly inside the relative wrapper */}
   {product.discount > 0 && (
-    <div className="absolute top-2 right-2 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold z-10">
-      {product.discount}%
-    </div>
-  )}
+            <div className="absolute top-2 right-2 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold z-10">
+              {product.discount}%
+            </div>
+          )}
 </div>
 
 
-              <div className="p-4">
-                <h2 className="text-xs sm:text-base font-semibold mb-2">
-                  {product.name}
-                </h2>
-                <div className="flex items-center gap-2">
-                  <div className="text-sm text-red-600">
-                    Rs.
-                    {(product.price * (1 - product.discount / 100)).toFixed(2)}
-                  </div>
-                  {product.discount > 0 && (
-                    <div className="text-sm text-gray-500 line-through">
-                      Rs.{product.price.toFixed(2)}
-                    </div>
-                  )}
-                </div>
-              </div>
+        {/* Product Info */}
+        <div className="p-3 sm:p-4">
+          <h2 className="text-sm sm:text-base font-semibold mb-1 sm:mb-2 line-clamp-2">
+            {product.name}
+          </h2>
+          <div className="flex items-center gap-2">
+            <div className="text-sm font-medium text-red-600">
+              Rs.{(product.price * (1 - product.discount / 100)).toFixed(2)}
             </div>
-          </Link>
-        ))}
+            {product.discount > 0 && (
+              <div className="text-xs text-gray-500 line-through">
+                Rs.{product.price.toFixed(2)}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
+    </Link>
+  ))}
+</div>
+
     </div>
   );
 };
