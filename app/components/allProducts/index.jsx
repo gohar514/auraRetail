@@ -14,20 +14,18 @@ import { AllProductsPageView } from "@/app/lib/metaPixel";
 const AllProducts = ({ relatedProducts }) => {
   const pathname = usePathname();
 
-  // Trigger Meta Pixel page view
   useEffect(() => {
     AllProductsPageView();
   }, [pathname]);
 
-  // Use related products if provided, otherwise fallback to default data
   const productsToShow = useMemo(
     () => (relatedProducts?.length > 0 ? relatedProducts : ProductsData),
     [relatedProducts]
   );
 
   const [sortOption, setSortOption] = useState("");
+  const [loadedProductIds, setLoadedProductIds] = useState({}); // ✅ Track loaded state per product
 
-  // Sorting logic based on selected option
   const sortedProducts = useMemo(() => {
     const sortBy = {
       "Price, low to high": (a, b) =>
@@ -46,9 +44,12 @@ const AllProducts = ({ relatedProducts }) => {
     setSortOption(e.target.value);
   }, []);
 
+  const handleImageLoad = (productId) => {
+    setLoadedProductIds((prev) => ({ ...prev, [productId]: true }));
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 font-tenorSans bg-cream">
-      {/* Sort dropdown */}
       <div className="flex justify-end items-center mb-8">
         <select
           className="text-sm py-2 px-2 bg-cream rounded-md shadow-sm outline-darkGreen border border-darkGreen"
@@ -63,67 +64,76 @@ const AllProducts = ({ relatedProducts }) => {
         </select>
       </div>
 
-      {/* Product Grid */}
       <div className="grid gap-2 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {sortedProducts.map((product, index) => (
-    <Link href={`/product/${product.id}`} key={product.id}>
-     <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+        {sortedProducts.map((product, index) => (
+          <Link href={`/product/${product.id}`} key={product.id}>
+            <div className="bg-[#FFFCF7] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+              <div className="relative w-full aspect-[1/1]">
 
-        {/* Image Slider */}
-        <div className="relative w-full aspect-[1/1]">
-  <Swiper
-    spaceBetween={5}
-    slidesPerView={1}
-    loop={product.images.length > 1}
-    className="absolute inset-0 w-full h-full"
-  >
-    {product.images.map((image, imgIndex) => (
-      <SwiperSlide key={imgIndex}>
-        <div className="relative w-full h-full">
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="object-cover rounded-lg transition-transform duration-300 ease-in-out"
-            quality={60}
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            loading={imgIndex === 0 ? "eager" : "lazy"}
-            priority={index < 4 && imgIndex === 0}
-          />
-        </div>
-      </SwiperSlide>
-    ))}
-  </Swiper>
+                {/* ✅ Fallback image until loaded */}
+                {!loadedProductIds[product.id] && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-cream">
+                    <Image
+                      src="/assets/static_image_aura_with_text.png"
+                      alt={`${product.name} fallback`}
+                      fill
+                      className="object-cover rounded-lg"
+                      priority
+                    />
+                  </div>
+                )}
 
-  {product.discount > 0 && (
-            <div className="absolute top-2 right-2 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold z-10">
-              {product.discount}%
-            </div>
-          )}
-</div>
+                <Swiper
+                  spaceBetween={5}
+                  slidesPerView={1}
+                  loop={product.images.length > 1}
+                  className="absolute inset-0 w-full h-full z-20"
+                >
+                  {product.images.map((image, imgIndex) => (
+                    <SwiperSlide key={imgIndex}>
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={image}
+                          alt={product.name}
+                          fill
+                          className="object-cover rounded-lg transition-transform duration-300 ease-in-out"
+                          quality={60}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          loading={imgIndex === 0 ? "eager" : "lazy"}
+                          priority={index < 4 && imgIndex === 0}
+                          onLoad={() => handleImageLoad(product.id)} // ✅ Mark image as loaded
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
 
-
-        {/* Product Info */}
-        <div className="p-3 sm:p-4">
-          <h2 className="text-sm sm:text-base font-semibold mb-1 sm:mb-2 line-clamp-2">
-            {product.name}
-          </h2>
-          <div className="flex items-center gap-2">
-            <div className="text-sm font-medium text-red-600">
-              Rs.{(product.price * (1 - product.discount / 100)).toFixed(2)}
-            </div>
-            {product.discount > 0 && (
-              <div className="text-xs text-gray-500 line-through">
-                Rs.{product.price.toFixed(2)}
+                {product.discount > 0 && (
+                  <div className="absolute top-2 right-2 bg-red-600 text-white py-1 px-2 rounded-md text-sm font-semibold z-30">
+                    {product.discount}%
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </Link>
-  ))}
-</div>
 
+              <div className="p-3 sm:p-4">
+                <h2 className="text-sm sm:text-base font-semibold mb-1 sm:mb-2 line-clamp-2">
+                  {product.name}
+                </h2>
+                <div className="flex items-center gap-2">
+                  <div className="text-sm font-medium text-red-600">
+                    Rs.{(product.price * (1 - product.discount / 100)).toFixed(2)}
+                  </div>
+                  {product.discount > 0 && (
+                    <div className="text-xs text-gray-500 line-through">
+                      Rs.{product.price.toFixed(2)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
