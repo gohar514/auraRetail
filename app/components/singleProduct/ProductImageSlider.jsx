@@ -12,6 +12,7 @@ const ProductImageSlider = React.memo(({ images, productName }) => {
   const swiperRef = useRef(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [loadedIndexes, setLoadedIndexes] = useState(new Set());
+  const [isCurrentImageLoaded, setIsCurrentImageLoaded] = useState(false);
 
   const handleImageLoad = (i) => {
     setLoadedIndexes((prev) => {
@@ -20,11 +21,8 @@ const ProductImageSlider = React.memo(({ images, productName }) => {
       return newSet;
     });
 
-    if (i === 0 && fallbackRef.current) {
-      fallbackRef.current.style.opacity = "0";
-      setTimeout(() => {
-        if (fallbackRef.current) fallbackRef.current.style.display = "none";
-      }, 400);
+    if (i === currentImage) {
+      setIsCurrentImageLoaded(true);
     }
   };
 
@@ -46,7 +44,9 @@ const ProductImageSlider = React.memo(({ images, productName }) => {
         {/* Fallback Image */}
         <div
           ref={fallbackRef}
-          className="absolute inset-0 z-10 flex items-center justify-center bg-cream transition-opacity duration-500 ease-in-out"
+          className={`absolute inset-0 z-10 flex items-center justify-center bg-cream transition-opacity duration-300 ease-in-out ${
+            isCurrentImageLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
         >
           <Image
             src="/assets/static_image_aura_with_text.png"
@@ -63,7 +63,9 @@ const ProductImageSlider = React.memo(({ images, productName }) => {
             swiperRef.current = swiper;
           }}
           onSlideChange={(swiper) => {
-            setCurrentImage(swiper.realIndex);
+            const newIndex = swiper.realIndex;
+            setCurrentImage(newIndex);
+            setIsCurrentImageLoaded(loadedIndexes.has(newIndex));
           }}
           slidesPerView={1}
           loop={images.length > 1}
