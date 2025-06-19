@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
            />
          </noscript>
        </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-cream`}>
         <AnnouncementBar />
         <ClientProvider1>
           <NavBar />
