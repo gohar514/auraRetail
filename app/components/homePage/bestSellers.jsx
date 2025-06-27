@@ -48,13 +48,18 @@ const SlideWithFallback = ({ image, product, index }) => {
 
 // 🔼 Main BestSellers Component
 const BestSellers = ({ relatedProducts }) => {
-  const productsToShow = useMemo(
-    () =>
-      relatedProducts?.length > 0
-        ? relatedProducts
-        : ProductsData.slice(0, 4),
-    [relatedProducts]
-  );
+  const productsToShow = useMemo(() => {
+    if (
+      relatedProducts &&
+      Array.isArray(relatedProducts) &&
+      relatedProducts.length > 0 &&
+      relatedProducts.every(p => Array.isArray(p.images) && p.images.length > 0)
+    ) {
+      return relatedProducts;
+    }
+    return ProductsData.slice(0, 4);
+  }, [relatedProducts]);
+  
 
   const pathname = usePathname();
   useEffect(() => {
